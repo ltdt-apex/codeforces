@@ -1,6 +1,7 @@
 import sys
 # sys.setrecursionlimit(10**5+5)
 input = sys.stdin.readline
+from collections import defaultdict
 
 def solve():
     n = int(input())
