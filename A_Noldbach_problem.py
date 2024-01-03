@@ -5,7 +5,8 @@ from collections import defaultdict
 import math
 
 def find_primes(n):
-    half = int(math.sqrt(n)) + 1
+    # half = int(math.sqrt(n)) + 1
+    half = n
     primes = [1 for _ in range(half+1)]
 
     primes[0] = 0
@@ -22,41 +23,31 @@ def find_primes(n):
     primes = [i for i, is_prime in enumerate(primes) if is_prime]
     return primes
 
-# primes = find_primes(1e16)
+primes = find_primes(1000)
 
-# def factor(n):
-#     d = defaultdict(int)
-#     for i in primes:
-#         if i*i > n:
-#             continue
-#         while n%i == 0:
-#             d[i]+=1
-#             n//=i
-#     if n > 1:
-#         d[n] += 1
-#     return d
-
-def plain_factor(n):
+def factor(n):
     d = defaultdict(int)
-
-    i = 2
-    while i*i <= n:
+    for i in primes:
+        if i*i > n:
+            continue
         while n%i == 0:
-            d[i] += 1
+            d[i]+=1
             n//=i
-        i+=1
-    
     if n > 1:
         d[n] += 1
     return d
 
 def solve():
-    while True:
-        n = int(input())
-        if n == 0:
-            return
-        d = plain_factor(n)
-        print(" ".join(f"{k}^{v}" for k,v in d.items()))
+    a, b = list(map(int, input().split()))
+
+    ans = 0
+    for j in range(1, len(primes)):
+        if 1 + primes[j] + primes[j-1] > a:
+            break
+        if 1 + primes[j] + primes[j-1] in primes:
+            ans+=1
+    print("YES" if ans >= b else "NO")
+    
 
 if __name__ == "__main__":
     test = 1
