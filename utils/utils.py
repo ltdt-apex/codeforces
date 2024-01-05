@@ -33,6 +33,29 @@ def is_prime(n):
         
     return True
 
+def factor(n, set_=False):
+    """
+    find all prime factor, return in counter
+    O(sqrt(n))
+    """
+    from collections import defaultdict
+
+    d = defaultdict(int)
+    i = 2
+    while i*i <= n:
+        while n%i == 0:
+            d[i] += 1
+            n//=i
+        i+=1
+
+    if n>1:
+        d[n] += 1
+
+    if set_:
+        return set(d.keys())
+    else:
+        return d
+
 def primes(n, full_table=True, set_=True):
     """
     find all prime from [0,n]
