@@ -108,3 +108,31 @@ def find_soe(n):
             j+=i*2
 
     return soe
+
+def phi(n):
+    p = n
+    i = 2
+    while i * i <= n:
+        if n%i == 0:
+            while n%i == 0:
+                n//=i
+            p -= p//i
+        i+=1
+    
+    if n > 1:
+        p-=p//n
+
+    return p
+
+def phi_1_to_n(n):
+    phis = [i for i in range(n+1)]
+
+    for i in range(2, n+1, 2):
+        phis[i] -= phis[i]//2
+
+    for i in range(3, n+1, 2):
+        if phis[i] == i:
+            for j in range(i, n+1, i):
+                phis[j] -= phis[j]//i
+    
+    return phis
