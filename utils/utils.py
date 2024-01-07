@@ -91,19 +91,16 @@ def primes(n, full_table=True, set_=True):
 def find_soe(n):
     """
     generate soe table from [0,n]
-    O(nlog(log(sqrt(n)))) ~= O(n)
+    O(nlog(log(n))) ~= O(n)
 
-    log(log(sqrt(n))) = 3.90... when n=10**9
+    log(log(n)) = 4.90... when n=10**9
     """
-    import math
-
-    half = int(math.sqrt(n)) + 1
     soe = [0 for _ in range(n+1)]
 
     for i in range(4, n+1, 2):
         soe[i] = 2
 
-    for i in range(3, half, 2):
+    for i in range(3, n+1, 2):
         if soe[i]:
             continue
         for j in range(i*i, n+1, i*2):
