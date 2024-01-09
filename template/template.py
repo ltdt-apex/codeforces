@@ -5,9 +5,12 @@ from collections import defaultdict
 from itertools import accumulate
 import math
 
+def inputa():
+    return list(map(int, input().split()))
+
 def solve():
     n = int(input())
-    a = list(map(int, input().split()))
+    a = inputa()
 
 if __name__ == "__main__":
     test = 1
