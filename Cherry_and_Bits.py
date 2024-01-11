@@ -15,28 +15,26 @@ def solve():
     q = int(input())
     qs = [inputa() for i in range(q)]
 
-    ap = [[0]*(m+2) for _ in range(n+2)]
+    ap = [[0]*n for i in range(m)]
 
     for t,l,d,r in qs:
-        ap[t][l]+=1
-        ap[t][r+1]-=1
-        ap[d+1][l]-=1
-        ap[d+1][r+1]+=1
+        t-=1
+        l-=1
+        ap[t][l] += 1
+        if r < m:
+            ap[t][r]-=1
+        if d < n:
+            ap[d][l]-=1
+        if d < n and r < m:
+            ap[d][r] += 1
     
-    for i in range(1,n+1):
-        for j in range(1, m+1):
-            ap[i][j] += ap[i-1][j] + ap[i][j-1] - ap[i-1][j-1]
-            
-    for i in range(1,n+1):
-        for j in range(1,m+1):
-            a[i-1][j-1] += ap[i][j]
-            a[i-1][j-1] %= 2
-
+    ap = list(zip(*map(accumulate, zip(*map(accumulate, ap)))))
+    
     for i in range(n):
         for j in range(m):
+            a[i][j] = (a[i][j] + ap[i][j])%2
             print(a[i][j], end="")
         print()
-
 
 if __name__ == "__main__":
     test = 1

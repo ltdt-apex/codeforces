@@ -136,3 +136,8 @@ def phi_1_to_n(n):
                 phis[j] -= phis[j]//i
     
     return phis
+
+def prefix_2d(a):
+    from itertools import accumulate
+    
+    return list(zip(*map(accumulate, zip(*map(accumulate, a)))))
