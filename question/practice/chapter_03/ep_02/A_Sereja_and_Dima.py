@@ -8,25 +8,24 @@ import math
 def inputa():
     return list(map(int, input().split()))
 
-def inputs():
-    return list(input().strip())
-
 def solve():
-    n,I = inputa()
+    n = int(input())
     a = inputa()
-    a.sort()
 
-    m = math.floor(2**(8*I/n))
-
-    ans = 0
     l = 0
-    for r in range(n):
-        while a[r] - a[l] + 1 > m:
+    r = n-1
+    i = 0
+    ans = [0,0]
+    while l <= r:
+        if a[l] > a[r]:
+            ans[i] += a[l]
             l+=1
-        
-        ans = max(ans, r-l+1)
-    
-    print(n-ans)
+        else:
+            ans[i] += a[r]
+            r-=1
+        i = (i+1)%2
+
+    print(*ans)
 
 if __name__ == "__main__":
     test = 1
