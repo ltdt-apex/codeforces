@@ -8,6 +8,9 @@ import math
 def inputa():
     return list(map(int, input().split()))
 
+def inputs():
+    return list(input().strip())
+
 def solve():
     n = int(input())
     a = inputa()
