@@ -11,7 +11,7 @@ def inputa():
 def inputs():
     return list(input().strip())
 
-def solve():
+def solve(test):
     n = int(input())
     a = inputa()
 
@@ -19,5 +19,5 @@ if __name__ == "__main__":
     test = 1
     # test = int(input())
     while(test):
-        solve()
         test-=1
+        solve(test)
