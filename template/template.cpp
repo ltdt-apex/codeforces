@@ -88,6 +88,6 @@ int main() {
     cin.tie(nullptr);
  
     int TC = 1;
-    cin >> TC;
+    // cin >> TC;
     while (TC--) solve(TC);
 }
