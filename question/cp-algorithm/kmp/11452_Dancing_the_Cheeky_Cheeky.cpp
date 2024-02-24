@@ -73,7 +73,14 @@ void union_sets(ll a, ll b, vl& parent, vl& size) {
  
 void solve(int TC) {
     ll n;
+    vl a(n);
+    
     cin >> n;
+    rep(i,0,n){
+        cin >> a[i];
+    }
+
+    
 }
 
 int main() {
@@ -81,6 +88,6 @@ int main() {
     cin.tie(nullptr);
  
     int TC = 1;
-    // cin >> TC;
+    cin >> TC;
     while (TC--) solve(TC);
 }

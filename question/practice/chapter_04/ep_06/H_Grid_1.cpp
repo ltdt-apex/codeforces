@@ -72,8 +72,25 @@ void union_sets(ll a, ll b, vl& parent, vl& size) {
 }
  
 void solve(int TC) {
-    ll n;
-    cin >> n;
+    ll n,m;
+    cin >> n >> m;
+
+    char a[n][m];
+    rep(i,0,n) rep(j,0,m) cin >> a[i][j];
+
+    vvl dp(n+1, vl(m+1, 0));
+
+    dp[1][1] = 1;
+
+    rep(i,1,n+1)
+        rep(j,1,m+1){
+            if (a[i-1][j-1] == '#'){
+                continue;
+            }
+            dp[i][j] += (dp[i-1][j] + dp[i][j-1]) % mod;
+        }
+
+    cout << dp.back().back();
 }
 
 int main() {

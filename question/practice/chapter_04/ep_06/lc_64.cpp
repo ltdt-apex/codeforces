@@ -71,16 +71,28 @@ void union_sets(ll a, ll b, vl& parent, vl& size) {
     }
 }
  
-void solve(int TC) {
-    ll n;
-    cin >> n;
-}
+class Solution {
+public:
+    int minPathSum(vector<vector<int>>& a) {
+        ll n = a.size(), m = a[0].size();
 
-int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(nullptr);
- 
-    int TC = 1;
-    // cin >> TC;
-    while (TC--) solve(TC);
-}
+        rep(i,0,n){
+            rep(j,0,m){
+                int mi = INT_MAX;
+                if (i>0){
+                    mi = min(mi,a[i-1][j]);
+                }
+                if (j>0){
+                    mi = min(mi,a[i][j-1]);
+                }
+
+                if (mi==INT_MAX){
+                    continue;
+                }
+                a[i][j] += mi;
+            }
+        }
+
+        return a.back().back();
+    }
+};

@@ -72,8 +72,54 @@ void union_sets(ll a, ll b, vl& parent, vl& size) {
 }
  
 void solve(int TC) {
-    ll n;
-    cin >> n;
+    string s, t;
+    cin >> t >> s;
+
+    s += "#";
+    // cout << s << endl;
+    ll n = s.size(), m = t.size();
+    // cout << n << endl;
+
+    vl dp(n);
+    ll j = 0;
+    rep(i,1,n){
+        while (j and s[j]!=s[i]){
+            j = dp[j-1];
+        }
+        if(s[i]==s[j]){
+            j++;
+        }
+        dp[i] = j;
+    }
+    // rep(i,0,n)
+    //     cout << dp[i] << " ";
+    // cout << endl;
+
+    j = 0;
+    vl ans;
+    rep(i,0,m){
+        while (j and s[j]!=t[i]){
+            j = dp[j-1];
+        }
+        if (s[j]==t[i]){
+            j++;
+        }
+        // cout << j << " ";
+        if (j == n-1) ans.pb(i-j+2);
+    }
+
+    if (ans.size()){
+        cout << ans.size() << endl;
+        rep(i,0,ans.size()){
+            cout << ans[i] << " ";
+        }
+        cout << endl;
+    }
+    else{
+        cout << "Not Found" << endl;
+    }
+
+    cout << endl;
 }
 
 int main() {
@@ -81,6 +127,6 @@ int main() {
     cin.tie(nullptr);
  
     int TC = 1;
-    // cin >> TC;
+    cin >> TC;
     while (TC--) solve(TC);
 }
