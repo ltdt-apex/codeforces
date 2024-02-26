@@ -34,7 +34,8 @@ const int zl = 122;
  
 const int lt = 32;
  
-// dsu O(log n) find_set and union_sets
+// dsu O(alpha(n)) find_set and union_sets
+// O(alpha(n)) is approximately O(1) for a reasonable n
 pair<vl,vl> init_set(ll n){
     vl parent(n);
     rep(i,0,n){
