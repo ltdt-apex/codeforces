@@ -4,6 +4,9 @@ input = sys.stdin.readline
 from collections import defaultdict
 from itertools import accumulate
 import math
+from collections import deque # queue for bfs
+
+dir = [(-1,0),(1,0),(0,-1),(0,1)]
 
 def inputa():
     return list(map(int, input().split()))
