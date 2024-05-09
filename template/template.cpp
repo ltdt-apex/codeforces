@@ -2,15 +2,29 @@
  
 using namespace std;
  
-typedef long long ll;
 typedef vector<int> vi;
- 
+typedef vector<vector<int>> vvi;
+typedef vector<vector<vector<int>>> vvvi;
+
+typedef pair<int, int> pii;
+typedef vector<pair<int,int>> vii;
+typedef vector<vector<pair<int,int>>> vvii;
+typedef vector<tuple<int, int, int>> viii;
+
+typedef tuple<int, int, int> tiii;
+
+typedef long long ll;
+
 typedef vector<ll> vl;
 typedef vector<vector<ll>> vvl;
+typedef vector<vector<vector<ll>>> vvvl;
+
+typedef pair<ll, ll> pll;
 typedef vector<pair<ll,ll>> vll;
 typedef vector<vector<pair<ll,ll>>> vvll;
-typedef vector<vector<vector<ll>>> vvvl;
 typedef vector<tuple<ll, ll, ll>> vlll;
+
+typedef tuple<ll, ll, ll> tlll;
  
 #define f first
 #define s second
@@ -33,6 +47,15 @@ const int zu = 90;
 const int zl = 122;
  
 const int lt = 32;
+
+bool isNumeric(const std::string& str) {
+    try {
+        std::stoi(str);
+        return true;
+    } catch (...) {
+        return false;
+    }
+}
  
 // dsu O(alpha(n)) find_set and union_sets
 // O(alpha(n)) is approximately O(1) for a reasonable n
