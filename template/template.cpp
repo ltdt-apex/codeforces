@@ -56,48 +56,53 @@ bool isNumeric(const std::string& str) {
         return false;
     }
 }
- 
-// dsu O(alpha(n)) find_set and union_sets
+
+// DSU O(alpha(n)) find_set and union_sets
 // O(alpha(n)) is approximately O(1) for a reasonable n
-pair<vl,vl> init_set(ll n){
-    vl parent(n);
-    rep(i,0,n){
-        parent[i] = i;
+struct DSU {
+    ll one; // is one index?
+    vl p; // parent
+    vl s; // size
+    ll g; // number of group
+
+    // Constructor
+    DSU(ll n, ll o = 1) : one(1), p(n+1), s(n+1, 1), g(n) {
+        rep(i, 0, n+1)
+            p[i] = i;
     }
-    vl size(n, 1);
- 
-    return {parent, size};
-}
- 
-void make_set(ll v, vl& parent, vl& size) {
-    parent[v] = v;
-    size[v] = 1;
-}
- 
-ll find_set(ll v, vl& parent) {
-    if (v == parent[v])
-        return v;
-    return parent[v] = find_set(parent[v], parent);
-}
- 
-ll same_set(ll u, ll v, vl& parent){
-    return find_set(u, parent) == find_set(v, parent);
-}
- 
-void union_sets(ll a, ll b, vl& parent, vl& size) {
-    a = find_set(a, parent);
-    b = find_set(b, parent);
-    if (a != b) {
-        if (size[a] < size[b])
-            swap(a, b);
-        parent[b] = a;
-        size[a] += size[b];
+
+    // Find operation
+    ll find(ll v) {
+        if (v == p[v])
+            return v;
+        return p[v] = find(p[v]);
     }
-}
+
+    // Same set check
+    bool same(ll u, ll v) {
+        return find(u) == find(v);
+    }
+
+    // Union operation
+    void join(ll u, ll v) {
+        u = find(u);
+        v = find(v);
+        if (u != v) {
+            if (s[u] < s[v])
+                swap(u, v);
+            p[v] = u;
+            s[u] += s[v];
+            g--;
+        }
+    }
+};
+
  
 void solve(int TC) {
-    ll n;
-    cin >> n;
+    // ll n;
+    // cin >> n;
+
+    
 }
 
 int main() {
@@ -106,5 +111,7 @@ int main() {
  
     int TC = 1;
     // cin >> TC;
-    while (TC--) solve(TC);
+    while (TC--) {
+        solve(TC);
+    }
 }
