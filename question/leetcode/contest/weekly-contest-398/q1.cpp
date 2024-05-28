@@ -97,82 +97,15 @@ struct DSU {
     }
 };
 
-// https://cp-algorithms.com/data_structures/segment_tree.html
-// segment tree
-// O(n) build
-// O(log n) find
-// O(log n) update
+class Solution {
+public:
+    bool isArraySpecial(vector<int>& a) {
+        ll n = a.size();
 
-// O(n) in memory
-struct ST {
-    ll n;
-    vl t;
-
-    ST(vl& a): n(a.size()), t(4*n) {
-        build(a, 1, 0, n-1);
-    }
-
-    ll combine(ll a, ll b){
-        return a + b;
-        // return max(a,b);
-        // return min(a,b);
-    }
-
-    void build(vl& a, ll v, ll tl, ll tr){
-        if(tl==tr) t[v] = a[tl];
-        else {
-            ll tm = (tl+tr)/2;
-            build(a, v*2, tl, tm);
-            build(a, v*2+1, tm+1, tr);
-            t[v] = combine(t[v*2], t[v*2+1]);
+        rep(i,1,n){
+            if (a[i]%2==a[i-1]%2) return false;
         }
-    }
 
-    ll query(ll v, ll tl, ll tr, ll l, ll r){
-        if(l>r) return 0;
-        // if(l>r) return LONG_LONG_MAX; // for min queries
-        if (l==tl and r==tr) return t[v];
-
-        ll tm = (tl+tr)/2;
-        return combine(query(v*2, tl, tm, l, min(r,tm)),
-            query(v*2+1, tm+1, tr, max(l,tm+1), r));
-    }
-
-    ll query(ll l, ll r){
-        return query(1, 0, n-1, l, r);
-    }
-
-    void update(ll v, ll tl, ll tr, ll pos, ll new_v){
-        if (tl==tr) t[v] = new_v;
-        else{
-            ll tm = (tl+tr)/2;
-            if(pos <= tm) update(v*2, tl, tm, pos, new_v);
-            else update(v*2+1, tm+1, tr, pos, new_v);
-
-            t[v] = combine(t[v*2], t[v*2+1]);
-        }
-    }
-
-    void update(ll pos, ll new_v){
-        update(1, 0, n-1, pos, new_v);
+        return true;
     }
 };
-
- 
-void solve(int TC) {
-    // ll n;
-    // cin >> n;
-
-    
-}
-
-int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(nullptr);
- 
-    int TC = 1;
-    // cin >> TC;
-    while (TC--) {
-        solve(TC);
-    }
-}
