@@ -99,38 +99,42 @@ struct DSU {
 
  
 void solve(int TC) {
+    // cout << endl;
     // ll n;
     // cin >> n;
 
-    ll n1,n2,n3; cin >> n1 >> n2 >> n3;
-    vl v1(n1);
-    rep(i,0,n1) cin >> v1[i];
-    sort(all(v1));
-
-    vl v2(n2);
-    rep(i,0,n2) cin >> v2[i];
-    sort(all(v2));
-
-    vl v3(n3);
-    rep(i,0,n3) cin >> v3[i];
-    sort(all(v3));
-
-    ll n = n1+n2+n3;
-
+    ll n; cin >> n;
     vl v(n);
-    rep(i,0,n1) v[i] = v1[i];
-    rep(i,n1,n1+n2) v[i] = v2[i-n1];
-    rep(i,n1+n2,n) v[i] = v3[i-n2-n1];
+    rep(i,0,n) cin >> v[i];
 
-    vl dp;
-    for(auto x: v){
-        ll i = lower_bound(all(dp), x) - dp.begin();
-
-        if (i==dp.size()) dp.pb(x);
-        else dp[i] = x;
+    ll a = 0;
+    ll b = 0;
+    for(ll i=0;i<n;i+=2){
+        b = max(v[i], b+v[i]);
+        a = max(a,b);
     }
 
-    cout << n - dp.size();
+    ll ans = a;
+
+    ll ga = 0;
+    b = 0;
+    for(ll i=1;i<n;i+=2){
+        b = max(v[i]-v[i-1], b+v[i]-v[i-1]);
+        ga = max(ga,b);
+        // cout << ga << endl; 
+        ans = max(ans,ga+a);
+    }
+
+    ga = 0;
+    b=0;
+    for(ll i=1;i+1<n;i+=2){
+        b = max(v[i]-v[i+1], b+v[i]-v[i+1]);
+        ga = max(ga,b);
+        // cout << ga << endl;
+        ans = max(ans,ga+a);
+    }
+    
+    cout << ans << endl;
 }
 
 int main() {
@@ -138,7 +142,7 @@ int main() {
     cin.tie(nullptr);
  
     int TC = 1;
-    // cin >> TC;
+    cin >> TC;
     while (TC--) {
         solve(TC);
     }

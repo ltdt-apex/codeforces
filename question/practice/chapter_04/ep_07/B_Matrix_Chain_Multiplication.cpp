@@ -97,40 +97,38 @@ struct DSU {
     }
 };
 
+ll dfs(ll i, ll j, vl& a, vvl& dp){
+    if(i==j) return 0;
+    if(dp[i][j] != 0) return dp[i][j];
+
+    ll m = LONG_LONG_MAX;
+    rep(k,i,j){
+        ll c = dfs(i,k,a,dp) + dfs(k+1,j,a,dp) + a[i] * a[k+1] * a[j+1];
+        m = min(c,m);
+    }
+
+    dp[i][j] = m;
+    return m;
+}
+
  
 void solve(int TC) {
     // ll n;
     // cin >> n;
 
-    ll n1,n2,n3; cin >> n1 >> n2 >> n3;
-    vl v1(n1);
-    rep(i,0,n1) cin >> v1[i];
-    sort(all(v1));
+    ll n; cin >> n;
+    vll v(n);
+    rep(i,0,n) cin >> v[i].f >> v[i].s;
 
-    vl v2(n2);
-    rep(i,0,n2) cin >> v2[i];
-    sort(all(v2));
-
-    vl v3(n3);
-    rep(i,0,n3) cin >> v3[i];
-    sort(all(v3));
-
-    ll n = n1+n2+n3;
-
-    vl v(n);
-    rep(i,0,n1) v[i] = v1[i];
-    rep(i,n1,n1+n2) v[i] = v2[i-n1];
-    rep(i,n1+n2,n) v[i] = v3[i-n2-n1];
-
-    vl dp;
-    for(auto x: v){
-        ll i = lower_bound(all(dp), x) - dp.begin();
-
-        if (i==dp.size()) dp.pb(x);
-        else dp[i] = x;
+    vl a;
+    a.pb(v[0].f);
+    rep(i,0,n){
+        a.pb(v[i].s);
     }
 
-    cout << n - dp.size();
+    vvl dp(n, vl(n));
+
+    cout << dfs(0,n-1,a,dp) << endl;
 }
 
 int main() {

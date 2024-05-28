@@ -102,35 +102,71 @@ void solve(int TC) {
     // ll n;
     // cin >> n;
 
-    ll n1,n2,n3; cin >> n1 >> n2 >> n3;
-    vl v1(n1);
-    rep(i,0,n1) cin >> v1[i];
-    sort(all(v1));
+    ll n;
+    cin >> n;
 
-    vl v2(n2);
-    rep(i,0,n2) cin >> v2[i];
-    sort(all(v2));
-
-    vl v3(n3);
-    rep(i,0,n3) cin >> v3[i];
-    sort(all(v3));
-
-    ll n = n1+n2+n3;
-
-    vl v(n);
-    rep(i,0,n1) v[i] = v1[i];
-    rep(i,n1,n1+n2) v[i] = v2[i-n1];
-    rep(i,n1+n2,n) v[i] = v3[i-n2-n1];
-
-    vl dp;
-    for(auto x: v){
-        ll i = lower_bound(all(dp), x) - dp.begin();
-
-        if (i==dp.size()) dp.pb(x);
-        else dp[i] = x;
+    vll p(n+1);
+    rep(i,1,n+1){
+        cin >> p[i].f >> p[i].s;
     }
 
-    cout << n - dp.size();
+    vl a(n+1);
+    rep(i,1,n+1){
+        cin >> a[i];
+    }
+    vl b(n+1);
+    rep(i,1,n+1){
+        cin >> b[i];
+    }
+
+    vector<vector<tlll>> adj(n+1);
+
+    rep(i,1,n+1){
+        adj[0].pb({a[i],i,0});
+        rep(j,1,i){
+            ll w = (b[i]+b[j])*(abs(p[i].f-p[j].f) + abs(p[i].s-p[j].s));
+
+            adj[i].pb({w,j,i});
+            adj[j].pb({w,i,j});
+        }
+    }
+
+    set<tlll> s;
+    s.insert({0,0,-1});
+    vll d(n+1, {LONG_LONG_MAX, -1});
+    vl vis(n+1);
+    ll ans = 0;
+    vl a1;
+    vll a2;
+
+    while(not s.empty()){
+        auto[w,u,x] = *s.begin();
+        s.erase(s.begin());
+
+        if(vis[u]) continue;
+        vis[u] = 1;
+
+        if(x==0) a1.pb(u);
+        if(x>0) a2.pb({u,x});
+
+        ans+=w;
+
+        for(auto [w,v,u]: adj[u]){
+            if (w < d[v].f){
+                s.erase({w,d[v].f,d[v].s});
+                d[v] = {w,u};
+                s.insert({w,v,u});
+            }
+        }
+    }
+
+    cout << ans << endl;
+    cout << a1.size() << endl;
+    for(auto x: a1) cout << x << " ";
+    cout << endl;
+
+    cout << a2.size() << endl;
+    for(auto[x,y]: a2) cout << x << " " << y << endl;
 }
 
 int main() {

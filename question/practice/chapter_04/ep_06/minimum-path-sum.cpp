@@ -97,49 +97,20 @@ struct DSU {
     }
 };
 
- 
-void solve(int TC) {
-    // ll n;
-    // cin >> n;
+class Solution {
+public:
+    int minPathSum(vector<vector<int>>& v) {
+        ll n = v.size(), m = v[0].size();
 
-    ll n1,n2,n3; cin >> n1 >> n2 >> n3;
-    vl v1(n1);
-    rep(i,0,n1) cin >> v1[i];
-    sort(all(v1));
+        vvl dp(n, vl(m, LONG_LONG_MAX));
+        dp[0][0] = v[0][0];
+        rep(i,0,n){
+            rep(j,0,m){
+                if(i>0) dp[i][j] = min(dp[i][j], dp[i-1][j] + v[i][j]);
+                if(j>0) dp[i][j] = min(dp[i][j], dp[i][j-1] + v[i][j]);
+            }
+        }
 
-    vl v2(n2);
-    rep(i,0,n2) cin >> v2[i];
-    sort(all(v2));
-
-    vl v3(n3);
-    rep(i,0,n3) cin >> v3[i];
-    sort(all(v3));
-
-    ll n = n1+n2+n3;
-
-    vl v(n);
-    rep(i,0,n1) v[i] = v1[i];
-    rep(i,n1,n1+n2) v[i] = v2[i-n1];
-    rep(i,n1+n2,n) v[i] = v3[i-n2-n1];
-
-    vl dp;
-    for(auto x: v){
-        ll i = lower_bound(all(dp), x) - dp.begin();
-
-        if (i==dp.size()) dp.pb(x);
-        else dp[i] = x;
+        return dp[n-1][m-1];
     }
-
-    cout << n - dp.size();
-}
-
-int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(nullptr);
- 
-    int TC = 1;
-    // cin >> TC;
-    while (TC--) {
-        solve(TC);
-    }
-}
+};

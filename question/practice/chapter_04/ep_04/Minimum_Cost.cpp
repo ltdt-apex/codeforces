@@ -102,35 +102,27 @@ void solve(int TC) {
     // ll n;
     // cin >> n;
 
-    ll n1,n2,n3; cin >> n1 >> n2 >> n3;
-    vl v1(n1);
-    rep(i,0,n1) cin >> v1[i];
-    sort(all(v1));
+    while(1){
+        string x,y;
+        cin >> x;
+        if (x == "#")return;
+        cin >> y;
 
-    vl v2(n2);
-    rep(i,0,n2) cin >> v2[i];
-    sort(all(v2));
+        ll n=x.size(), m=y.size();
 
-    vl v3(n3);
-    rep(i,0,n3) cin >> v3[i];
-    sort(all(v3));
+        vvl dp(n+1, vl(m+1));
+        rep(i,1,n+1) dp[i][0] = dp[i-1][0] + 15;
+        rep(j,1,m+1) dp[0][j] = dp[0][j-1] + 30;
 
-    ll n = n1+n2+n3;
+        rep(i,1,n+1){
+            rep(j,1,m+1){
+                dp[i][j] = min(dp[i-1][j] + 15, dp[i][j-1] + 30);
+                if (x[i-1] == y[j-1]) dp[i][j] = min(dp[i][j], dp[i-1][j-1]);
+            }
+        }
 
-    vl v(n);
-    rep(i,0,n1) v[i] = v1[i];
-    rep(i,n1,n1+n2) v[i] = v2[i-n1];
-    rep(i,n1+n2,n) v[i] = v3[i-n2-n1];
-
-    vl dp;
-    for(auto x: v){
-        ll i = lower_bound(all(dp), x) - dp.begin();
-
-        if (i==dp.size()) dp.pb(x);
-        else dp[i] = x;
+        cout << dp[n][m] << endl;
     }
-
-    cout << n - dp.size();
 }
 
 int main() {

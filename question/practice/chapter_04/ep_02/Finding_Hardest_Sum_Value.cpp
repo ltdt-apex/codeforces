@@ -102,43 +102,74 @@ void solve(int TC) {
     // ll n;
     // cin >> n;
 
-    ll n1,n2,n3; cin >> n1 >> n2 >> n3;
-    vl v1(n1);
-    rep(i,0,n1) cin >> v1[i];
-    sort(all(v1));
+    ll n, m;cin >> n >> m;
 
-    vl v2(n2);
-    rep(i,0,n2) cin >> v2[i];
-    sort(all(v2));
+    vvl v(n, vl(m));
 
-    vl v3(n3);
-    rep(i,0,n3) cin >> v3[i];
-    sort(all(v3));
-
-    ll n = n1+n2+n3;
-
-    vl v(n);
-    rep(i,0,n1) v[i] = v1[i];
-    rep(i,n1,n1+n2) v[i] = v2[i-n1];
-    rep(i,n1+n2,n) v[i] = v3[i-n2-n1];
-
-    vl dp;
-    for(auto x: v){
-        ll i = lower_bound(all(dp), x) - dp.begin();
-
-        if (i==dp.size()) dp.pb(x);
-        else dp[i] = x;
+    rep(i,0,n){
+        rep(j,0,m){
+            cin >> v[i][j];
+        }
     }
 
-    cout << n - dp.size();
+    vvl a1(n, vl(m, LONG_LONG_MAX));
+    rep(i,0,n){
+        ll b = 0;
+        rep(j,0,m){
+            b = min(v[i][j], v[i][j]+b);
+            a1[i][j] = min(a1[i][j],b);
+        }
+    }
+
+    vvl a2(n, vl(m, LONG_LONG_MAX));
+    rep(i,0,n){
+        ll b = 0;
+        repr(j,m-1,-1){
+            b = min(v[i][j], v[i][j]+b);
+            a2[i][j] = min(a2[i][j],b);
+        }
+    }
+
+    vvl a3(n, vl(m, LONG_LONG_MAX));
+    rep(j,0,m){
+        ll b = 0;
+        rep(i,0,n){
+            b = min(v[i][j], v[i][j]+b);
+            a3[i][j] = min(a3[i][j],b);
+        }
+    }
+
+    vvl a4(n, vl(m, LONG_LONG_MAX));
+    repr(j,m-1,-1){
+        ll b = 0;
+        repr(i,n-1,-1){
+            b = min(v[i][j], v[i][j]+b);
+            a4[i][j] = min(a4[i][j],b);
+        }
+    }
+
+    // rep(i,0,n){
+    //     rep(j,0,m){
+    //         cout << a4[i][j] << " ";
+    //     }
+    //     cout << endl;
+    // }
+
+    ll ans = LONG_LONG_MAX;
+
+    rep(i,0,n) rep(j,0,m) ans = min(ans, a1[i][j] + a2[i][j] + a3[i][j] + a4[i][j] - 3*v[i][j]);
+
+    cout << ans << endl;
+
 }
 
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
- 
+
     int TC = 1;
-    // cin >> TC;
+    cin >> TC;
+    // cout << TC << endl;
     while (TC--) {
         solve(TC);
     }

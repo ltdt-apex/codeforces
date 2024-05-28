@@ -102,35 +102,42 @@ void solve(int TC) {
     // ll n;
     // cin >> n;
 
-    ll n1,n2,n3; cin >> n1 >> n2 >> n3;
-    vl v1(n1);
-    rep(i,0,n1) cin >> v1[i];
-    sort(all(v1));
+    while(1){
+        ll n,m;
+        cin >> n >> m;
 
-    vl v2(n2);
-    rep(i,0,n2) cin >> v2[i];
-    sort(all(v2));
+        if(!n and !m) return;
 
-    vl v3(n3);
-    rep(i,0,n3) cin >> v3[i];
-    sort(all(v3));
+        vvll adj(n);
+        ll total = 0;
+        rep(i,0,m){
+            ll u,v,w;
+            cin >> u >> v >> w;
+            total += w;
+            adj[u].pb({w,v});
+            adj[v].pb({w,u});
+        }
 
-    ll n = n1+n2+n3;
+        set<pll>s;
+        s.insert({0,0});
+        vl vis(n);
+        ll ans = 0;
 
-    vl v(n);
-    rep(i,0,n1) v[i] = v1[i];
-    rep(i,n1,n1+n2) v[i] = v2[i-n1];
-    rep(i,n1+n2,n) v[i] = v3[i-n2-n1];
+        while(!s.empty()){
+            auto[w,u] = *s.begin();
+            s.erase(s.begin());
 
-    vl dp;
-    for(auto x: v){
-        ll i = lower_bound(all(dp), x) - dp.begin();
+            if(vis[u]) continue;
+            vis[u]=1;
+            ans+=w;
 
-        if (i==dp.size()) dp.pb(x);
-        else dp[i] = x;
+            for(auto[w,v]:adj[u]){
+                s.insert({w,v});
+            }
+        }
+
+        cout << total - ans << endl;
     }
-
-    cout << n - dp.size();
 }
 
 int main() {

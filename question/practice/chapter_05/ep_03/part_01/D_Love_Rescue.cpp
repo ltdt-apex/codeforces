@@ -102,35 +102,32 @@ void solve(int TC) {
     // ll n;
     // cin >> n;
 
-    ll n1,n2,n3; cin >> n1 >> n2 >> n3;
-    vl v1(n1);
-    rep(i,0,n1) cin >> v1[i];
-    sort(all(v1));
+    ll n;
+    cin >> n;
+    string x,y;
+    cin >> x >> y;
 
-    vl v2(n2);
-    rep(i,0,n2) cin >> v2[i];
-    sort(all(v2));
+    ll ans = 0;
+    vector<pair<char,char>> l;
 
-    vl v3(n3);
-    rep(i,0,n3) cin >> v3[i];
-    sort(all(v3));
+    DSU dsu = DSU(26);
+    rep(i,0,n){
+        ll a,b;
+        a = x[i]-al;
+        b = y[i]-al;
 
-    ll n = n1+n2+n3;
+        if (not dsu.same(a,b)){
+            ans++;
+            l.pb({x[i],y[i]});
+        }
 
-    vl v(n);
-    rep(i,0,n1) v[i] = v1[i];
-    rep(i,n1,n1+n2) v[i] = v2[i-n1];
-    rep(i,n1+n2,n) v[i] = v3[i-n2-n1];
-
-    vl dp;
-    for(auto x: v){
-        ll i = lower_bound(all(dp), x) - dp.begin();
-
-        if (i==dp.size()) dp.pb(x);
-        else dp[i] = x;
+        dsu.join(a,b);
     }
 
-    cout << n - dp.size();
+    cout << ans << endl;
+    rep(i,0,ans){
+        cout << l[i].f << " " << l[i].s << endl;
+    }
 }
 
 int main() {

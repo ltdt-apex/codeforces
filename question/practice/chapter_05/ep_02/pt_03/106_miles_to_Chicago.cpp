@@ -2,15 +2,29 @@
  
 using namespace std;
  
-typedef long long ll;
 typedef vector<int> vi;
- 
+typedef vector<vector<int>> vvi;
+typedef vector<vector<vector<int>>> vvvi;
+
+typedef pair<int, int> pii;
+typedef vector<pair<int,int>> vii;
+typedef vector<vector<pair<int,int>>> vvii;
+typedef vector<tuple<int, int, int>> viii;
+
+typedef tuple<int, int, int> tiii;
+
+typedef long long ll;
+
 typedef vector<ll> vl;
 typedef vector<vector<ll>> vvl;
+typedef vector<vector<vector<ll>>> vvvl;
+
+typedef pair<ll, ll> pll;
 typedef vector<pair<ll,ll>> vll;
 typedef vector<vector<pair<ll,ll>>> vvll;
-typedef vector<vector<vector<ll>>> vvvl;
 typedef vector<tuple<ll, ll, ll>> vlll;
+
+typedef tuple<ll, ll, ll> tlll;
  
 #define f first
 #define s second
@@ -33,8 +47,18 @@ const int zu = 90;
 const int zl = 122;
  
 const int lt = 32;
+
+bool isNumeric(const std::string& str) {
+    try {
+        std::stoi(str);
+        return true;
+    } catch (...) {
+        return false;
+    }
+}
  
-// dsu O(log n) find_set and union_sets
+// dsu O(alpha(n)) find_set and union_sets
+// O(alpha(n)) is approximately O(1) for a reasonable n
 pair<vl,vl> init_set(ll n){
     vl parent(n);
     rep(i,0,n){
@@ -71,28 +95,49 @@ void union_sets(ll a, ll b, vl& parent, vl& size) {
     }
 }
  
-class Solution {
-public:
-    int minPathSum(vector<vector<int>>& a) {
-        ll n = a.size(), m = a[0].size();
+void solve(int n) {
+    ll m;
+    cin >> m;
 
-        rep(i,0,n){
-            rep(j,0,m){
-                int mi = INT_MAX;
-                if (i>0){
-                    mi = min(mi,a[i-1][j]);
-                }
-                if (j>0){
-                    mi = min(mi,a[i][j-1]);
-                }
+    vector<vector<double>> d(n+1, vector<double>(n+1, 0));
 
-                if (mi==INT_MAX){
-                    continue;
+    rep(i,1,n+1){
+        d[i][i] = 1;
+    }
+
+    rep(i,0,m){
+        ll u,v,w;
+        cin >> u >> v >> w;
+
+        d[u][v] = w/100.0;
+        d[v][u] = w/100.0;
+    }
+
+    rep(k,1,n+1){
+        rep(i,1,n+1){
+            rep(j,1,n+1){
+                if (d[i][k] != 0 and d[k][j] != 0){
+                    d[i][j] = max(d[i][j], d[i][k]*d[k][j]);
                 }
-                a[i][j] += mi;
             }
         }
-
-        return a.back().back();
     }
-};
+
+    cout << fixed << setprecision(6) << d[1][n]*100 << " percent" << endl;
+
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+ 
+    int TC = 1;
+    // cin >> TC;
+    while (1){
+        ll n,m;
+        cin >> n;
+        if (n == 0)
+            return 0;
+        solve(n);
+    }
+}

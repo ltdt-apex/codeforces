@@ -102,35 +102,32 @@ void solve(int TC) {
     // ll n;
     // cin >> n;
 
-    ll n1,n2,n3; cin >> n1 >> n2 >> n3;
-    vl v1(n1);
-    rep(i,0,n1) cin >> v1[i];
-    sort(all(v1));
+    ll n,m,c0,d0; cin >> n >> m >> c0 >> d0;
 
-    vl v2(n2);
-    rep(i,0,n2) cin >> v2[i];
-    sort(all(v2));
-
-    vl v3(n3);
-    rep(i,0,n3) cin >> v3[i];
-    sort(all(v3));
-
-    ll n = n1+n2+n3;
-
-    vl v(n);
-    rep(i,0,n1) v[i] = v1[i];
-    rep(i,n1,n1+n2) v[i] = v2[i-n1];
-    rep(i,n1+n2,n) v[i] = v3[i-n2-n1];
-
-    vl dp;
-    for(auto x: v){
-        ll i = lower_bound(all(dp), x) - dp.begin();
-
-        if (i==dp.size()) dp.pb(x);
-        else dp[i] = x;
+    vl dp(n+1);
+    repr(i,n,-1){
+        rep(j,1,n/c0+1){
+            if(i-j*c0 >= 0)
+                dp[i] = max(dp[i], dp[i-j*c0] + j*d0);
+        }
     }
 
-    cout << n - dp.size();
+    // rep(i,0,n+1){
+    //     cout << i << " " << dp[i] << endl;
+    // }
+
+    rep(k,0,m){
+        ll a,b,c,d;
+        cin >> a >> b >> c >> d;
+        repr(i,n,-1){
+            rep(j,1,a/b+1){
+                if(i-j*c >= 0)
+                    dp[i] = max(dp[i], dp[i-j*c] + j*d);
+            }
+        }
+    }
+
+    cout << *max_element(all(dp)) << endl;
 }
 
 int main() {

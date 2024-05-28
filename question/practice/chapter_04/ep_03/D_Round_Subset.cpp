@@ -97,41 +97,55 @@ struct DSU {
     }
 };
 
+ll f2(ll n){
+    ll c = 0;
+    while(n%2==0){
+        c++;
+        n/=2;
+    }
+    return c;
+}
+ll f5(ll n){
+    ll c = 0;
+    while(n%5==0){
+        c++;
+        n/=5;
+    }
+    return c;
+}
+
  
 void solve(int TC) {
     // ll n;
     // cin >> n;
 
-    ll n1,n2,n3; cin >> n1 >> n2 >> n3;
-    vl v1(n1);
-    rep(i,0,n1) cin >> v1[i];
-    sort(all(v1));
-
-    vl v2(n2);
-    rep(i,0,n2) cin >> v2[i];
-    sort(all(v2));
-
-    vl v3(n3);
-    rep(i,0,n3) cin >> v3[i];
-    sort(all(v3));
-
-    ll n = n1+n2+n3;
-
+    ll n,m; cin >> n >> m;
     vl v(n);
-    rep(i,0,n1) v[i] = v1[i];
-    rep(i,n1,n1+n2) v[i] = v2[i-n1];
-    rep(i,n1+n2,n) v[i] = v3[i-n2-n1];
+    rep(i,0,n) cin >> v[i];
+    vl v2(n);
+    vl v5(n);
 
-    vl dp;
-    for(auto x: v){
-        ll i = lower_bound(all(dp), x) - dp.begin();
+    rep(i,0,n) v2[i] = f2(v[i]);
+    rep(i,0,n) v5[i] = f5(v[i]);
 
-        if (i==dp.size()) dp.pb(x);
-        else dp[i] = x;
-    }
+    ll t2 = accumulate(all(v2),0);
 
-    cout << n - dp.size();
+    vvl dp(m+1, vl(t2+1, -LONG_LONG_MAX));
+    dp[0][0] = 0;
+
+    ll a = 0;
+
+    rep(k,0,n)
+        repr(i,min(k+1,m),0)
+            repr(j,t2,v2[k]-1){
+                dp[i][j] = max(dp[i][j], dp[i-1][j-v2[k]] + v5[k]);
+                a = max(a, min(j,dp[i][j]));
+            }
+    
+    cout << a << endl;
 }
+
+
 
 int main() {
     ios_base::sync_with_stdio(false);

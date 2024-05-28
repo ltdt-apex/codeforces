@@ -97,40 +97,57 @@ struct DSU {
     }
 };
 
+void dfs(set<string>& s,const vvl& dp,string& p,const string& x,const string& y, ll i, ll j){
+    if (i==0 or j==0) s.insert(p);
+
+    else if (x[i-1]==y[j-1]){
+        p += x[i-1];
+        i--;
+        j--;
+        dfs(s,dp,p,x,y,i,j);
+        p.pop_back();
+    }
+    else if(dp[i-1][j] > dp[i][j-1]){
+        i--;
+        dfs(s,dp,p,x,y,i,j);
+    }
+    else if (dp[i-1][j] < dp[i][j-1]){
+        j--;
+        dfs(s,dp,p,x,y,i,j);
+    }
+    else{
+        dfs(s,dp,p,x,y,i-1,j);
+        dfs(s,dp,p,x,y,i,j-1);
+    }
+}
+
  
 void solve(int TC) {
     // ll n;
     // cin >> n;
 
-    ll n1,n2,n3; cin >> n1 >> n2 >> n3;
-    vl v1(n1);
-    rep(i,0,n1) cin >> v1[i];
-    sort(all(v1));
+    string x,y; cin >> x >> y;
 
-    vl v2(n2);
-    rep(i,0,n2) cin >> v2[i];
-    sort(all(v2));
+    ll n = x.size(), m = y.size();
 
-    vl v3(n3);
-    rep(i,0,n3) cin >> v3[i];
-    sort(all(v3));
+    vvl dp(n+1, vl(m+1));
 
-    ll n = n1+n2+n3;
-
-    vl v(n);
-    rep(i,0,n1) v[i] = v1[i];
-    rep(i,n1,n1+n2) v[i] = v2[i-n1];
-    rep(i,n1+n2,n) v[i] = v3[i-n2-n1];
-
-    vl dp;
-    for(auto x: v){
-        ll i = lower_bound(all(dp), x) - dp.begin();
-
-        if (i==dp.size()) dp.pb(x);
-        else dp[i] = x;
+    rep(i,1,n+1){
+        rep(j,1,m+1){
+            if(x[i-1] == y[j-1]) dp[i][j] = dp[i-1][j-1] + 1;
+            else dp[i][j] = max(dp[i-1][j], dp[i][j-1]);
+        }
     }
 
-    cout << n - dp.size();
+    ll i = n, j = m;
+    set<string> s;
+    string p;
+    dfs(s,dp,p,x,y,i,j);
+
+    for (auto a: s){
+        reverse(all(a));
+        cout << a << endl;
+    }
 }
 
 int main() {
@@ -138,7 +155,7 @@ int main() {
     cin.tie(nullptr);
  
     int TC = 1;
-    // cin >> TC;
+    cin >> TC;
     while (TC--) {
         solve(TC);
     }

@@ -102,35 +102,71 @@ void solve(int TC) {
     // ll n;
     // cin >> n;
 
-    ll n1,n2,n3; cin >> n1 >> n2 >> n3;
-    vl v1(n1);
-    rep(i,0,n1) cin >> v1[i];
-    sort(all(v1));
+    ll n;
+    cin >> n;
 
-    vl v2(n2);
-    rep(i,0,n2) cin >> v2[i];
-    sort(all(v2));
-
-    vl v3(n3);
-    rep(i,0,n3) cin >> v3[i];
-    sort(all(v3));
-
-    ll n = n1+n2+n3;
-
-    vl v(n);
-    rep(i,0,n1) v[i] = v1[i];
-    rep(i,n1,n1+n2) v[i] = v2[i-n1];
-    rep(i,n1+n2,n) v[i] = v3[i-n2-n1];
-
-    vl dp;
-    for(auto x: v){
-        ll i = lower_bound(all(dp), x) - dp.begin();
-
-        if (i==dp.size()) dp.pb(x);
-        else dp[i] = x;
+    vll p(n+1);
+    rep(i,1,n+1){
+        cin >> p[i].f >> p[i].s;
     }
 
-    cout << n - dp.size();
+    // for (auto [u,v]: p){
+    //     cout << u << " " << v << endl;
+    // }
+
+    vlll adj;
+    rep(i,1,n+1){
+        ll w;
+        cin >> w;
+        adj.pb({w,i,0});
+    }
+
+    vl m(n+1);
+    rep(i,1,n+1){
+        cin >> m[i];
+    }
+
+    rep(i,1,n+1){
+        rep(j,1,i){
+            adj.pb({(m[i] + m[j])*(abs(p[i].f-p[j].f) + abs(p[i].s-p[j].s)),i,j});
+        }
+    }
+
+    // for (auto [w,u,v]: adj){
+    //     cout << w << " " << u << " " << v << endl;
+    // }
+
+    DSU dsu = DSU(n,1);
+    sort(all(adj));
+
+    ll ans=0;
+    vl station;
+    vll wire;
+
+    for (auto [w,u,v]: adj){
+        if (!dsu.same(u,v)){
+            dsu.join(u,v);
+            // cout << w << endl;
+            ans += w;
+            if(v==0){
+                station.pb(u);
+            }
+            else{
+                wire.pb({u,v});
+            }
+        }
+    }
+
+    cout << ans << endl;
+    cout << station.size() << endl;
+    for (auto x: station){
+        cout << x << " ";
+    }
+    cout << endl;
+    cout << wire.size() << endl;
+    for (auto [u,v]: wire){
+        cout << u << " " << v << endl;
+    }
 }
 
 int main() {

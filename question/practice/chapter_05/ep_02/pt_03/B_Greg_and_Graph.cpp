@@ -2,15 +2,29 @@
  
 using namespace std;
  
-typedef long long ll;
 typedef vector<int> vi;
- 
+typedef vector<vector<int>> vvi;
+typedef vector<vector<vector<int>>> vvvi;
+
+typedef pair<int, int> pii;
+typedef vector<pair<int,int>> vii;
+typedef vector<vector<pair<int,int>>> vvii;
+typedef vector<tuple<int, int, int>> viii;
+
+typedef tuple<int, int, int> tiii;
+
+typedef long long ll;
+
 typedef vector<ll> vl;
 typedef vector<vector<ll>> vvl;
+typedef vector<vector<vector<ll>>> vvvl;
+
+typedef pair<ll, ll> pll;
 typedef vector<pair<ll,ll>> vll;
 typedef vector<vector<pair<ll,ll>>> vvll;
-typedef vector<vector<vector<ll>>> vvvl;
 typedef vector<tuple<ll, ll, ll>> vlll;
+
+typedef tuple<ll, ll, ll> tlll;
  
 #define f first
 #define s second
@@ -33,8 +47,18 @@ const int zu = 90;
 const int zl = 122;
  
 const int lt = 32;
+
+bool isNumeric(const std::string& str) {
+    try {
+        std::stoi(str);
+        return true;
+    } catch (...) {
+        return false;
+    }
+}
  
-// dsu O(log n) find_set and union_sets
+// dsu O(alpha(n)) find_set and union_sets
+// O(alpha(n)) is approximately O(1) for a reasonable n
 pair<vl,vl> init_set(ll n){
     vl parent(n);
     rep(i,0,n){
@@ -72,21 +96,50 @@ void union_sets(ll a, ll b, vl& parent, vl& size) {
 }
  
 void solve(int TC) {
-    ll n,m; cin >> n >> m;
+    ll n;
+    cin >> n;
 
-    vector<pair<ll, float>> v(n);
-    rep(i,0,n) cin >> v[i].f >> v[i].s;
-
-    vl dp;
-
-    for(auto [a,b]: v){
-        ll i = upper_bound(all(dp), a) - dp.begin();
-
-        if(i==dp.size()) dp.pb(a);
-        else dp[i] = a;
+    vvl d(n+1, vl(n+1, LONG_LONG_MAX));
+    rep(i,1,n+1){
+        rep(j,1,n+1){
+            cin >> d[i][j];
+        }
     }
 
-    cout << n - dp.size();
+    vl a(n);
+    rep(i,0,n){
+        cin >> a[i];
+    }
+
+    reverse(all(a));
+    vl ans;
+
+    rep(k,0,n){
+        ll x = a[k];
+        rep(i,1,n+1){
+            rep(j,1,n+1){
+                if(d[i][x]!= LONG_LONG_MAX and d[x][j]!=LONG_LONG_MAX){
+                    d[i][j] = min(d[i][j], d[i][x] + d[x][j]);
+                    // cout << d[i][j] << endl;
+                }
+            }
+        }
+        ll total = 0; 
+        rep(i,0,k+1){
+            rep(j,0,k+1){
+                // cout << i << " " << j << endl;
+                // cout << d[a[i]][a[j]] << endl;
+                total += d[a[i]][a[j]];
+            }
+        }
+        ans.pb(total);
+    }
+
+    reverse(all(ans));
+
+    for(auto x:ans){
+        cout << x << " ";
+    }
 }
 
 int main() {

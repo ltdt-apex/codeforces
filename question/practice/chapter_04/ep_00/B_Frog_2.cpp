@@ -102,35 +102,22 @@ void solve(int TC) {
     // ll n;
     // cin >> n;
 
-    ll n1,n2,n3; cin >> n1 >> n2 >> n3;
-    vl v1(n1);
-    rep(i,0,n1) cin >> v1[i];
-    sort(all(v1));
+    ll n,m;
+    cin >> n >> m;
 
-    vl v2(n2);
-    rep(i,0,n2) cin >> v2[i];
-    sort(all(v2));
+    vl a(n);
+    rep(i,0,n) cin >> a[i];
 
-    vl v3(n3);
-    rep(i,0,n3) cin >> v3[i];
-    sort(all(v3));
+    vl dp(n, INT_MAX);
+    dp[0] = 0;
 
-    ll n = n1+n2+n3;
-
-    vl v(n);
-    rep(i,0,n1) v[i] = v1[i];
-    rep(i,n1,n1+n2) v[i] = v2[i-n1];
-    rep(i,n1+n2,n) v[i] = v3[i-n2-n1];
-
-    vl dp;
-    for(auto x: v){
-        ll i = lower_bound(all(dp), x) - dp.begin();
-
-        if (i==dp.size()) dp.pb(x);
-        else dp[i] = x;
+    rep(i,1,n){
+        rep(j,1,m+1){
+            if(i-j >= 0) dp[i] = min(dp[i], dp[i-j] + abs(a[i-j] - a[i]));
+        }
     }
 
-    cout << n - dp.size();
+    cout << dp.back();
 }
 
 int main() {

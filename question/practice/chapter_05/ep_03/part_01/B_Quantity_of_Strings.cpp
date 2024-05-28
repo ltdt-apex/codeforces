@@ -102,35 +102,35 @@ void solve(int TC) {
     // ll n;
     // cin >> n;
 
-    ll n1,n2,n3; cin >> n1 >> n2 >> n3;
-    vl v1(n1);
-    rep(i,0,n1) cin >> v1[i];
-    sort(all(v1));
+    ll n,m,k;
+    cin >> n >> m >> k;
 
-    vl v2(n2);
-    rep(i,0,n2) cin >> v2[i];
-    sort(all(v2));
+    if(n<k or k==1 or n==1){
+        ll ans = 1;
+        rep(i,0,n){
+            ans *= m;
+            ans %= mod;
+        }
 
-    vl v3(n3);
-    rep(i,0,n3) cin >> v3[i];
-    sort(all(v3));
-
-    ll n = n1+n2+n3;
-
-    vl v(n);
-    rep(i,0,n1) v[i] = v1[i];
-    rep(i,n1,n1+n2) v[i] = v2[i-n1];
-    rep(i,n1+n2,n) v[i] = v3[i-n2-n1];
-
-    vl dp;
-    for(auto x: v){
-        ll i = lower_bound(all(dp), x) - dp.begin();
-
-        if (i==dp.size()) dp.pb(x);
-        else dp[i] = x;
+        cout << ans;
+        return;
     }
 
-    cout << n - dp.size();
+    if(n==k){
+        ll ans = 1;
+        rep(i,0,n/2+n%2){
+            ans *= m;
+            ans %= mod;
+        }
+
+        cout << ans;
+        return;
+    }
+
+    if(k%2){
+        cout << m*m; 
+    }else
+        cout << m;
 }
 
 int main() {

@@ -60,14 +60,12 @@ bool isNumeric(const std::string& str) {
 // DSU O(alpha(n)) find_set and union_sets
 // O(alpha(n)) is approximately O(1) for a reasonable n
 struct DSU {
-    ll one; // is one index?
-    vl p; // parent
-    vl s; // size
-    ll g; // number of group
+    vl p;
+    vl s;
 
     // Constructor
-    DSU(ll n, ll o = 1) : one(1), p(n+1), s(n+1, 1), g(n) {
-        rep(i, 0, n+1)
+    DSU(ll n) : p(n), s(n, 1) {
+        rep(i,0,n)
             p[i] = i;
     }
 
@@ -92,7 +90,6 @@ struct DSU {
                 swap(u, v);
             p[v] = u;
             s[u] += s[v];
-            g--;
         }
     }
 };
@@ -102,35 +99,21 @@ void solve(int TC) {
     // ll n;
     // cin >> n;
 
-    ll n1,n2,n3; cin >> n1 >> n2 >> n3;
-    vl v1(n1);
-    rep(i,0,n1) cin >> v1[i];
-    sort(all(v1));
+    ll n,m;
+    cin >> n >> m;
 
-    vl v2(n2);
-    rep(i,0,n2) cin >> v2[i];
-    sort(all(v2));
+    DSU dsu = DSU(n);
 
-    vl v3(n3);
-    rep(i,0,n3) cin >> v3[i];
-    sort(all(v3));
+    rep(i,0,m){
+        ll t,u,v;
+        cin >> t >> u >> v;
 
-    ll n = n1+n2+n3;
-
-    vl v(n);
-    rep(i,0,n1) v[i] = v1[i];
-    rep(i,n1,n1+n2) v[i] = v2[i-n1];
-    rep(i,n1+n2,n) v[i] = v3[i-n2-n1];
-
-    vl dp;
-    for(auto x: v){
-        ll i = lower_bound(all(dp), x) - dp.begin();
-
-        if (i==dp.size()) dp.pb(x);
-        else dp[i] = x;
+        if(t){
+            cout << !!dsu.same(u,v) << endl;
+        }else{
+            dsu.join(u,v);
+        }
     }
-
-    cout << n - dp.size();
 }
 
 int main() {

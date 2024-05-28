@@ -2,15 +2,29 @@
  
 using namespace std;
  
-typedef long long ll;
 typedef vector<int> vi;
- 
+typedef vector<vector<int>> vvi;
+typedef vector<vector<vector<int>>> vvvi;
+
+typedef pair<int, int> pii;
+typedef vector<pair<int,int>> vii;
+typedef vector<vector<pair<int,int>>> vvii;
+typedef vector<tuple<int, int, int>> viii;
+
+typedef tuple<int, int, int> tiii;
+
+typedef long long ll;
+
 typedef vector<ll> vl;
 typedef vector<vector<ll>> vvl;
+typedef vector<vector<vector<ll>>> vvvl;
+
+typedef pair<ll, ll> pll;
 typedef vector<pair<ll,ll>> vll;
 typedef vector<vector<pair<ll,ll>>> vvll;
-typedef vector<vector<vector<ll>>> vvvl;
 typedef vector<tuple<ll, ll, ll>> vlll;
+
+typedef tuple<ll, ll, ll> tlll;
  
 #define f first
 #define s second
@@ -33,8 +47,18 @@ const int zu = 90;
 const int zl = 122;
  
 const int lt = 32;
+
+bool isNumeric(const std::string& str) {
+    try {
+        std::stoi(str);
+        return true;
+    } catch (...) {
+        return false;
+    }
+}
  
-// dsu O(log n) find_set and union_sets
+// dsu O(alpha(n)) find_set and union_sets
+// O(alpha(n)) is approximately O(1) for a reasonable n
 pair<vl,vl> init_set(ll n){
     vl parent(n);
     rep(i,0,n){
@@ -71,18 +95,47 @@ void union_sets(ll a, ll b, vl& parent, vl& size) {
     }
 }
  
-class Solution {
-public:
-    int lengthOfLIS(vector<int>& v) {
-        vl dp;
+void solve(int TC) {
+    ll n,m,o;
+    cin >> n >> m >> o;
 
-        for (auto x:v){
-            ll i = lower_bound(all(dp), x) - dp.begin();
+    vvl d(n+1, vl(n+1, LONG_LONG_MAX));
 
-            if (i == dp.size()) dp.pb(x);
-            else dp[i] = x;
-        }
-
-        return dp.size();
+    rep(i,1,n+1){
+        d[i][i] = 0;
     }
-};
+
+    rep(i,0,m){
+        ll u,v,w;
+        cin >> u >> v >> w;
+
+        d[u][v] = min(d[u][v], w);
+        d[v][u] = min(d[v][u], w);
+    }
+
+    rep(k,1,n+1){
+        rep(i,1,n+1){
+            rep(j,1,n+1){
+                if(d[i][k] != LONG_LONG_MAX and d[k][j] != LONG_LONG_MAX){
+                    d[i][j] = min(d[i][j], d[i][k] + d[k][j]);
+                }
+            }
+        }
+    }
+
+    rep(i,0,o){
+        ll u,v;
+        cin >> u >> v;
+        
+        d[u][v] == LONG_LONG_MAX ? cout << -1 << endl : cout << d[u][v] << endl;
+    }
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+ 
+    int TC = 1;
+    // cin >> TC;
+    while (TC--) solve(TC);
+}

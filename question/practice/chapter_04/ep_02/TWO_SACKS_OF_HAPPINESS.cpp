@@ -102,35 +102,34 @@ void solve(int TC) {
     // ll n;
     // cin >> n;
 
-    ll n1,n2,n3; cin >> n1 >> n2 >> n3;
-    vl v1(n1);
-    rep(i,0,n1) cin >> v1[i];
-    sort(all(v1));
-
-    vl v2(n2);
-    rep(i,0,n2) cin >> v2[i];
-    sort(all(v2));
-
-    vl v3(n3);
-    rep(i,0,n3) cin >> v3[i];
-    sort(all(v3));
-
-    ll n = n1+n2+n3;
+    ll n;
+    cin >> n;
 
     vl v(n);
-    rep(i,0,n1) v[i] = v1[i];
-    rep(i,n1,n1+n2) v[i] = v2[i-n1];
-    rep(i,n1+n2,n) v[i] = v3[i-n2-n1];
+    rep(i,0,n) cin >> v[i];
 
-    vl dp;
-    for(auto x: v){
-        ll i = lower_bound(all(dp), x) - dp.begin();
+    vl a1(n+1);
+    vl a2(n+1);
+    ll b1 = 0, b2 = 0;
 
-        if (i==dp.size()) dp.pb(x);
-        else dp[i] = x;
+    rep(i,0,n){
+        b1 = max(b1+v[i], v[i]);
+        a1[i+1] = max(b1, a1[i]);
     }
 
-    cout << n - dp.size();
+    repr(i,n-1,-1){
+        b2 = max(b2+v[i], v[i]);
+        a2[i] = max(b2, a2[i+1]);
+    }
+
+    ll ans = -LONG_LONG_MAX;
+
+    rep(i,1,n){
+        ans = max(ans, a1[i] + a2[i]);
+    }
+
+    cout << ans;
+
 }
 
 int main() {
