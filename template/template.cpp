@@ -36,7 +36,7 @@ typedef tuple<ll, ll, ll> tlll;
 #define sq(a) (a)*(a)
 #define all(a) a.begin(), a.end()
 #define rall(a) a.rbegin(), a.rend()
-#define ceild(a,b) (a)%(b) ? ((a)/(b) + 1) : (a)/(b)
+#define ceild(a,b) ((a)%(b) ? ((a)/(b) + 1) : (a)/(b))
 #define TxtIO freopen("input.txt","r",stdin); freopen("output.txt","w",stdout)
  
 const ll mod = 1e9 + 7;
