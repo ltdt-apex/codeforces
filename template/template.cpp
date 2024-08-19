@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
- 
+
 using namespace std;
- 
+
 typedef vector<int> vi;
 typedef vector<vector<int>> vvi;
 typedef vector<vector<vector<int>>> vvvi;
@@ -25,7 +25,7 @@ typedef vector<vector<pair<ll,ll>>> vvll;
 typedef vector<tuple<ll, ll, ll>> vlll;
 
 typedef tuple<ll, ll, ll> tlll;
- 
+
 #define f first
 #define s second
 #define pb push_back
@@ -38,16 +38,16 @@ typedef tuple<ll, ll, ll> tlll;
 #define rall(a) a.rbegin(), a.rend()
 #define ceild(a,b) ((a)%(b) ? ((a)/(b) + 1) : (a)/(b))
 #define TxtIO freopen("input.txt","r",stdin); freopen("output.txt","w",stdout)
- 
+
 const ll mod = 1e9 + 7;
- 
+
 const int au = 65;
 const int al = 97;
 const int zu = 90;
 const int zl = 122;
- 
+
 const int lt = 32;
- 
+
 void solve(int TC) {
     // ll n;
     // cin >> n;
@@ -58,7 +58,7 @@ void solve(int TC) {
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
- 
+
     int TC = 1;
     // cin >> TC;
     while (TC--) {
