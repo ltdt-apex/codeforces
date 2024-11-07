@@ -41,13 +41,6 @@ typedef tuple<ll, ll, ll> tlll;
 
 const ll mod = 1e9 + 7;
 
-const int au = 65;
-const int al = 97;
-const int zu = 90;
-const int zl = 122;
-
-const int lt = 32;
-
 void solve(int TC) {
     // ll n;
     // cin >> n;
