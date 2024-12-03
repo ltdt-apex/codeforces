@@ -41,6 +41,9 @@ typedef tuple<ll, ll, ll> tlll;
 
 const ll mod = 1e9 + 7;
 
+vii dirs = {{-1,0},{1,0},{0,-1},{0,1}};
+vii dirs8 = {{-1,-1},{-1,0},{-1,1},{0,-1},{0,1},{1,-1},{1,0},{1,1}};
+
 void solve(int TC) {
     // ll n;
     // cin >> n;
