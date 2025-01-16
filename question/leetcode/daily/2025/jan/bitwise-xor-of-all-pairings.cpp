@@ -47,17 +47,21 @@ vii dirs8 = {{-1,-1},{-1,0},{-1,1},{0,-1},{0,1},{1,-1},{1,0},{1,1}};
 
 class Solution {
 public:
-    vector<int> findThePrefixCommonArray(vector<int>& v1, vector<int>& v2) {
+    int xorAllNums(vector<int>& v1, vector<int>& v2) {
         int n = v1.size();
-        vi v(n+1);
-        vi a(n);
+        int m = v2.size();
 
-        rep(i,0,n){
-            v[v1[i]]++;
-            if(v[v1[i]]==2) a[i]++;
-            v[v2[i]]++;
-            if(v[v2[i]]==2) a[i]++;
-            if(i>0) a[i] += a[i-1];
+        int a = 0;
+
+        if(n%2){
+            rep(i,0,m){
+                a^=v2[i];
+            }
+        }
+        if(m%2){
+            rep(i,0,n){
+                a^=v1[i];
+            }
         }
 
         return a;

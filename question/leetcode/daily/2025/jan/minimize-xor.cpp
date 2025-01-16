@@ -44,22 +44,72 @@ const ll mod = 1e9 + 7;
 vii dirs = {{-1,0},{1,0},{0,-1},{0,1}};
 vii dirs8 = {{-1,-1},{-1,0},{-1,1},{0,-1},{0,1},{1,-1},{1,0},{1,1}};
 
-
 class Solution {
 public:
-    vector<int> findThePrefixCommonArray(vector<int>& v1, vector<int>& v2) {
-        int n = v1.size();
-        vi v(n+1);
-        vi a(n);
+    int minimizeXor(int n1, int n2) {
+        int b1 = 0;
+        int b0 = 0;
 
+        while(n2){
+            if(n2%2) b1++;
+            else b0++;
+
+            n2/=2;
+        }
+
+        int b = 0;
+        int c = b0+b1;
+
+        vi v;
+
+        while(n1){
+            v.pb(n1%2);
+            n1/=2;
+        }
+        reverse(all(v));
+        int n = v.size();
+
+        vi v2(n);
         rep(i,0,n){
-            v[v1[i]]++;
-            if(v[v1[i]]==2) a[i]++;
-            v[v2[i]]++;
-            if(v[v2[i]]==2) a[i]++;
-            if(i>0) a[i] += a[i-1];
+            if(v[i]==1 and b1>0){
+                v2[i]=1;
+                b1--;
+            }
+        }
+
+        // for(auto x: v2){
+        //     cout << x;
+        // }cout << endl;
+
+        repr(i,n-1,-1){
+            if(v[i]==0 and b1>0){
+                v2[i]=1;
+                b1--;
+            }
+        }
+
+        // for(auto x: v2){
+        //     cout << x;
+        // }cout << endl;
+
+        reverse(all(v2));
+        while(b1>0){
+            b1--;
+            v2.pb(1);
+        }
+
+        // for(auto x: v2){
+        //     cout << x;
+        // }cout << endl;
+
+        ll a = 0;
+        ll p = 1;
+        for(auto x: v2){
+            a+=p*x;
+            p*=2;
         }
 
         return a;
     }
 };
+
