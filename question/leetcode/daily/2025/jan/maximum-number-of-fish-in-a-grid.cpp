@@ -21,7 +21,7 @@ typedef vector<vector<vector<ll>>> vvvl;
 
 typedef pair<ll, ll> pll;
 typedef vector<pair<ll,ll>> vll;
-typedef vector<vector<pair<ll,ll>>> vvll;   
+typedef vector<vector<pair<ll,ll>>> vvll;
 typedef vector<tuple<ll, ll, ll>> vlll;
 
 typedef tuple<ll, ll, ll> tlll;
@@ -43,33 +43,38 @@ const ll mod = 1e9 + 7;
 
 vii dirs = {{-1,0},{1,0},{0,-1},{0,1}};
 vii dirs8 = {{-1,-1},{-1,0},{-1,1},{0,-1},{0,1},{1,-1},{1,0},{1,1}};
+
 class Solution {
 public:
-    long long gridGame(vector<vector<int>>& v) {
-        // after bot 1 take the path, the only thing bot 2 can do is either 
-        // 1. go till end of first row and then go down, or
-        // 2. go down at first step, then go till end.
-        // all other step is suboptimal
-        // this leads to a O(n) solution with prefix sum setup, 
-        // where n comes from full search on every possible bot 1 move.
 
-        int m = v[0].size();
+    int dfs(int i, int j, vvi& seen, int n, int m, vvi& v){
+        seen[i][j] = 1;
+        int a = v[i][j];
 
-        vl p1(m+1);
-        vl p2(m+1);
+        for(auto [di, dj]: dirs){
+            int ni = i + di;
+            int nj = j + dj;
 
-        rep(i,0,m){
-            p1[i+1] = p1[i] + v[0][i];
-            p2[i+1] = p2[i] + v[1][i];
+            if(ni<0 or nj<0 or ni>=n or nj>=m or v[ni][nj]==0 or seen[ni][nj]) continue;
+            a+=dfs(ni,nj,seen,n,m,v);
         }
 
-        ll a = LONG_LONG_MAX;
+        // cout << i << " " << j << " " << a << endl;
+        return a;
+    }
 
-        rep(i,0,m){
-            a = min(a, max(p1[m]-p1[i+1], p2[i]));
+    int findMaxFish(vector<vector<int>>& v) {
+        int n = v.size();
+        int m = v[0].size();
+        int a = 0;
+
+        vvi seen(n, vi(m));
+        rep(i,0,n){
+            rep(j,0,m){
+                if(not seen[i][j] and v[i][j]!=0) a=max(a,dfs(i,j,seen,n,m,v));
+            }
         }
 
         return a;
     }
 };
-

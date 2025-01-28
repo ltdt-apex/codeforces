@@ -21,7 +21,7 @@ typedef vector<vector<vector<ll>>> vvvl;
 
 typedef pair<ll, ll> pll;
 typedef vector<pair<ll,ll>> vll;
-typedef vector<vector<pair<ll,ll>>> vvll;   
+typedef vector<vector<pair<ll,ll>>> vvll;
 typedef vector<tuple<ll, ll, ll>> vlll;
 
 typedef tuple<ll, ll, ll> tlll;
@@ -43,33 +43,41 @@ const ll mod = 1e9 + 7;
 
 vii dirs = {{-1,0},{1,0},{0,-1},{0,1}};
 vii dirs8 = {{-1,-1},{-1,0},{-1,1},{0,-1},{0,1},{1,-1},{1,0},{1,1}};
+
+
 class Solution {
 public:
-    long long gridGame(vector<vector<int>>& v) {
-        // after bot 1 take the path, the only thing bot 2 can do is either 
-        // 1. go till end of first row and then go down, or
-        // 2. go down at first step, then go till end.
-        // all other step is suboptimal
-        // this leads to a O(n) solution with prefix sum setup, 
-        // where n comes from full search on every possible bot 1 move.
-
+    vector<vector<int>> highestPeak(vector<vector<int>>& v) {
+        int n = v.size();
         int m = v[0].size();
+        
+        vvi dp(n, vi(m, -1));
 
-        vl p1(m+1);
-        vl p2(m+1);
-
-        rep(i,0,m){
-            p1[i+1] = p1[i] + v[0][i];
-            p2[i+1] = p2[i] + v[1][i];
+        queue<pii> q;
+        rep(i,0,n){
+            rep(j,0,m){
+                if(v[i][j] == 1) {
+                    q.push({i,j});
+                    dp[i][j] = 0;
+                }
+            }
         }
 
-        ll a = LONG_LONG_MAX;
+        while(not q.empty()){
+            auto [i,j] = q.front();
+            q.pop();
 
-        rep(i,0,m){
-            a = min(a, max(p1[m]-p1[i+1], p2[i]));
+            for(auto [di, dj]: dirs){
+                int ni = i+di;
+                int nj = j+dj;
+
+                if(ni<0 or nj<0 or ni>=n or nj>=m or dp[ni][nj]!=-1) continue;
+
+                dp[ni][nj] = dp[i][j]+1;
+                q.push({ni,nj});
+            }
         }
 
-        return a;
+        return dp;
     }
 };
-
