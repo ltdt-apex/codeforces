@@ -9,14 +9,15 @@ public:
         for(auto c: s){
             count[c-'a']++;
         }
+
         for(auto c: t){
             count[c-'a']--;
         }
 
         for(int i=0;i<26;i++){
-            if(count[i]!=0) return false;
+            if(count[i]!=0) return 0;
         }
 
-        return true;
+        return 1;
     }
 };

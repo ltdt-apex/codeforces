@@ -11,14 +11,14 @@ public:
 
         int c = 1;
         for(int i=0;i<n;i++){
-            c = max(c, c*=nums[i]);
+            c*=nums[i];
             a = max(a,c);
 
             if(c==0) c=1;
         }
         c=1;
         for(int i=n-1;i>=0;i--){
-            c = max(c, c*=nums[i]);
+            c*=nums[i];
             a = max(a,c);
 
             if(c==0) c=1;

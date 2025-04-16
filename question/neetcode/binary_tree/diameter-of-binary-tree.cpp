@@ -15,23 +15,20 @@ using namespace std;
 class Solution {
 public:
 
-    int dfs(TreeNode* node, int& ans){
-        int left = 0;
-        int right = 0;
+    int dfs(TreeNode* node, int& a){
+        if (not node) return 0;
 
-        if(node->left) left = dfs(node->left, ans);
-        if(node->right) right = dfs(node->right, ans);
+        int left = dfs(node->left, a);
+        int right = dfs(node->right, a);
 
-        ans = max(ans, left+right);
-        return max(left,right)+1;
+        a = max(a,left+right);
+        return 1+max(left,right);
     }
 
     int diameterOfBinaryTree(TreeNode* root) {
-        int ans = 0;
+        int a = 0;
+        dfs(root,a);
 
-        if(root)
-            dfs(root, ans);
-
-        return ans;
+        return a;
     }
 };

@@ -6,25 +6,24 @@ public:
     bool canPartition(vector<int>& nums) {
         int n = nums.size();
 
-        int t = accumulate(nums.begin(), nums.end(), 0);
+        int s = accumulate(nums.begin(), nums.end(), 0);
 
-        if(t%2) return 0;
+        if(s%2!=0) return false;
+        int m = s/2;
 
-        t/=2;
-
-        vector<int> dp(t+1);
+        vector<int> dp(m+1);
         dp[0] = 1;
 
-        for(int i=0;i<n;i++){
-            vector<int> ndp(t+1);
-            for(int j=0;j<t+1;j++){
-                ndp[j] = dp[j];
-                if(j-nums[i] >=0) ndp[j] |= dp[j-nums[i]];
+        for(auto x: nums){
+            vector<int> ndp = dp;
+
+            for(int i=1;i<=m;i++){
+                if(i-x>=0 and dp[i-x]==1) ndp[i] = 1;
             }
 
             dp = move(ndp);
         }
 
-        return dp[t];
+        return dp[m];
     }
 };

@@ -12,14 +12,15 @@ maxProfit = max(maxProfit, cur-low)
 class Solution {
 public:
     int maxProfit(vector<int>& prices) {
-        int maxProfit = 0;
-        int low = INT_MAX;
+        int m = prices[0];
+        int a = 0;
 
-        for(auto p: prices){
-            low = min(low, p);
-            maxProfit = max(maxProfit, p-low);
+        for(int i=0;i<prices.size();i++){
+            m = min(m,prices[i]);
+            a = max(a, prices[i]-m);
         }
 
-        return maxProfit;
+        return a;
+
     }
 };

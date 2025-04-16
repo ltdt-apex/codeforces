@@ -5,31 +5,29 @@ class Solution {
 public:
     vector<int> productExceptSelf(vector<int>& nums) {
         /*
-        [1,2,3,4]
-
-        pre = [1,1,2,6]
-        suf = [24,12,4,1]
+        3
+        0 1 2 3
+          3 2 1 0
         */
         int n = nums.size();
 
-        vector<int> prefix(n,1);
-        vector<int> suffix(n,1);
-
-        int pre = 1;
-        for(int i=0;i<n-1;i++){
-            pre*=nums[i];
-            prefix[i+1] = pre;
-        }
-        int suf = 1;
-        for(int i=0;i<n-1;i++){
-            suf*=nums[n-i-1];
-            suffix[n-i-2] = suf;
-        }
-
+        vector<int> pre;
+        pre.push_back(1);
         for(int i=0;i<n;i++){
-            prefix[i]*=suffix[i];
+            pre.push_back(pre.back()*nums[i]);
+        }
+        vector<int> post;
+        post.push_back(1);
+        for(int i=n-1;i>=0;i--){
+            post.push_back(post.back()*nums[i]);
         }
 
-        return prefix;
+
+        vector<int> a(n);
+        for(int i=0;i<n;i++){
+            a[i] = pre[i]*post[n-i-1];
+        }
+
+        return a;
     }
 };

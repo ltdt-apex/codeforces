@@ -2,58 +2,59 @@
 using namespace std;
 
 class Twitter {
-public:
-    unordered_map<int, vector<pair<int,int>>> tweetMap; // userid -> (time,tweetid)
-    unordered_map<int, unordered_set<int>> followerMap; // follower id -> followee id
-    int time;
-
-    Twitter() {
-        time = 0;
-    }
-    
-    void postTweet(int userId, int tweetId) {
-        tweetMap[userId].push_back({time,tweetId});
-        time++;
-    }
-    
-    vector<int> getNewsFeed(int userId) {
-        priority_queue<tuple<int,int,int,int>> q;
-        vector<int> tweets;
-
-        followerMap[userId].insert(userId);
-
-        for(auto followee: followerMap[userId]){
-            int index = tweetMap[followee].size()-1;
-            if(index<0) continue;
-            auto [time, tweetid] = tweetMap[followee][index];
-            q.push({time,index,tweetid,followee});
+    private:
+        unordered_map<int, unordered_set<int>> follows; // userid -> [set(followedid)]
+        unordered_map<int, vector<pair<int,int>>> posts; // userid -> [{time,tweetid}]
+        int t;
+    public:
+        Twitter() {
+            t=0;
         }
-
-        while(not q.empty() and tweets.size()<10){
-            int time,index,tweetid,followee;
-            tie(time,index,tweetid,followee) = q.top();
-
-            q.pop();
-            tweets.push_back(tweetid);
-
-            index--;
-            if(index<0) continue;
-
-            auto [newtime, newtweetid] = tweetMap[followee][index];
-            q.push({newtime,index,newtweetid,followee});
+        
+        void postTweet(int userId, int tweetId) {
+            posts[userId].push_back({t,tweetId});
+            t++;
         }
+        
+        vector<int> getNewsFeed(int userId) {
+            follows[userId].insert(userId);
 
-        return tweets;
-    }
-    
-    void follow(int followerId, int followeeId) {
-        followerMap[followerId].insert(followeeId);
-    }
-    
-    void unfollow(int followerId, int followeeId) {
-        followerMap[followerId].erase(followeeId);
-    }
-};
+            priority_queue<tuple<int,int,int>> q; // time, followeeid, index
+            vector<int> ans;
+
+            for(auto followee: follows[userId]){
+                if(not posts[followee].empty()) {
+                    auto [time, tid] = posts[followee].back();
+                    int n = posts[followee].size();
+                    q.push({time,followee,n-1});
+                }
+            }
+
+            while(ans.size()<10 and not q.empty()){
+                int time, fid, index;
+                tie(time,fid,index) = q.top(); q.pop();
+
+                ans.push_back(posts[fid][index].second);
+
+                index--;
+                if(index>=0){
+                    auto [time, tid] = posts[fid][index];
+                    q.push({time,fid,index});
+                }
+            }
+
+            return ans;
+
+        }
+        
+        void follow(int followerId, int followeeId) {
+            follows[followerId].insert(followeeId);
+        }
+        
+        void unfollow(int followerId, int followeeId) {
+            follows[followerId].erase(followeeId);
+        }
+    };
 
 /**
  * Your Twitter object will be instantiated and called as such:

@@ -4,39 +4,39 @@ using namespace std;
 
 class Solution {
 public:
-    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
-        vector<int> required(numCourses);
-        vector<int> count(numCourses);
+    bool canFinish(int n, vector<vector<int>>& pre) {
+        vector<vector<int>> adj(n);
+        vector<int> deg(n);
 
-        vector<vector<int>> adj(numCourses);
-        int n = prerequisites.size();
-        for(auto pre: prerequisites){
-            adj[pre[0]].push_back(pre[1]);
-            required[pre[1]]++;
+        int m = pre.size();
+        for(int i=0;i<m;i++){
+            int v = pre[i][0];
+            int u = pre[i][1];
+
+            adj[u].push_back(v);
+            deg[v]++;
         }
 
         queue<int> q;
-        int finished = 0;
+        int c = 0;
 
-        for(int i=0;i<numCourses;i++){
-            if(required[i]==0) {
-                q.push(i);
-                finished++;
+        for(int i=0;i<n;i++){
+            if(deg[i]==0){
+                q.push(i);                
             }
         }
 
         while(not q.empty()){
-            int course = q.front();
-            q.pop();
-            for(auto next: adj[course]){
-                count[next]++;
-                if(count[next] == required[next]){
-                    q.push(next);
-                    finished++;
-                }
+            int u = q.front(); q.pop();
+
+            c++;
+
+            for(auto v: adj[u]){
+                deg[v]--;
+                if(deg[v]==0) q.push(v);
             }
         }
 
-        return finished == numCourses;
+        return c==n;
     }
 };

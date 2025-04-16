@@ -25,16 +25,16 @@ class Solution {
 public:
     int rob(vector<int>& nums) {
         int n = nums.size();
+
         vector<int> dp(2);
 
         for(int i=0;i<n;i++){
-            int a = max(dp[0], dp[1]+nums[i]);
-            int b = max(dp[0], dp[1]);
+            int nr = max(dp[0], dp[1]);
+            int r = max(dp[1], dp[0] + nums[i]);
 
-            dp[0] = a;
-            dp[1] = b;
+            dp = {nr, r};
         }
 
-        return dp[0];
+        return max(dp[0], dp[1]);
     }
 };

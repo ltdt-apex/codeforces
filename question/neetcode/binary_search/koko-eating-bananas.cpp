@@ -3,15 +3,17 @@ using namespace std;
 
 class Solution {
 public:
-    bool caneat(vector<int>& piles, int h, int k){
-        long long required = 0;
+    int canEat(int x, vector<int>& piles, int h){
+        long long c = 0;
 
-        for(auto p: piles){
-            required += p/k + (p%k>0);
+        for(auto y: piles){
+            c+=y/x;
+            if(y%x)c++;
         }
 
-        return required <= h;
+        return c<=h;
     }
+
 
     int minEatingSpeed(vector<int>& piles, int h) {
         int n = piles.size();
@@ -19,13 +21,11 @@ public:
         int j = *max_element(piles.begin(), piles.end());
         int k = j;
 
-        while(j){
-            while(k-j>=1 and caneat(piles,h,k-j)){
-                k-=j;
-            }
-            j/=2;
+        while(k){
+            while(j-k>0 and canEat(j-k, piles, h)) j-=k;
+            k/=2;
         }
 
-        return k;
+        return j;
     }
 };

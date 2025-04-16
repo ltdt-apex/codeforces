@@ -21,11 +21,10 @@ public:
 
         int n = s.size();
         vector<int> dp(n+1);
-        dp[0] = 1;
-
-        for(int i=0;i<n;i++){
-            for(int j=0;j<=i;j++){
-                if(dp[j] and set.count(s.substr(j,i-j+1))) dp[i+1] = 1;
+        dp[0]=1;
+        for(int i=1;i<=n;i++){
+            for(int j=i;j>=1;j--){
+                if(dp[i-j] and set.count(s.substr(i-j, j))) dp[i] = 1;
             }
         }
 

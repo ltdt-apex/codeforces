@@ -5,15 +5,16 @@ using namespace std;
 class Solution {
 public:
     int minCostClimbingStairs(vector<int>& cost) {
-        int c1 = 0;
-        int c2 = 0;
+        int n = cost.size();
 
-        for(auto c: cost){
-            int nc = min(c1,c2) + c;
-            c1 = c2;
-            c2 = nc;
+        vector<int> dp(n);
+        dp[0] = cost[0];
+        dp[1] = cost[1];
+
+        for(int i=2;i<n;i++){
+            dp[i] = min(dp[i-1],dp[i-2]) + cost[i];
         }
 
-        return min(c1,c2);
+        return min(dp[n-1], dp[n-2]);
     }
 };

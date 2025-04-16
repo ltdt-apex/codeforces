@@ -1,62 +1,59 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-struct TrieNode{
-    TrieNode* child[26] = {nullptr};
-    bool isEnd = false;
+struct TrieNode {
+    TrieNode* c[26] = {nullptr};
+    bool isEnd;
 
-    TrieNode(){}
+    TrieNode(){
+        isEnd = false;
+    }
 };
 
 class WordDictionary {
-public:
+private:
     TrieNode* root;
-
+public:
     WordDictionary() {
-        root = new TrieNode();
+        root = new TrieNode();      
     }
     
     void addWord(string word) {
-        TrieNode* cur = root;
+        TrieNode* node = root;
 
-        for(auto c: word){
-            if(not cur->child[c-'a']) cur->child[c-'a'] = new TrieNode();
-            cur = cur->child[c-'a'];
+        for(auto ch: word){
+            if(not node->c[ch-'a']) node->c[ch-'a'] = new TrieNode();
+            node = node->c[ch-'a'];
         }
 
-        cur->isEnd = true;
+        node->isEnd = true;
     }
     
     bool search(string word) {
-        stack<pair<int, TrieNode*>> s;
-        s.push({0, root});
-
-        bool found = false;
+        stack<pair<TrieNode*,int>> s;
+        TrieNode* node = root;
+        s.push({root,0});
 
         while(not s.empty()){
-            bool currentVaild = true;
-
-            auto [i, cur] = s.top();
-            s.pop();
-            for(int j = i; j<word.size(); j++){
-                char c = word[j];
-                if (c=='.'){
-                    for(auto ch: cur->child){
-                        if(ch) s.push({j+1,ch});
-                    }
-                    currentVaild = false;
-                    break;
-                }
-                else if(not cur->child[c-'a']){
-                    currentVaild = false;
-                    break;
-                };
-                cur = cur->child[c-'a'];
+            auto [node, i] = s.top(); s.pop();
+            char ch = word[i];
+            if(i==word.size()){
+                if(node->isEnd) return true;
+                continue;
             }
-            if(currentVaild) found |= cur->isEnd;
+
+            if(ch=='.'){
+                for(int j=0;j<26;j++){
+                    if(node->c[j]) s.push({node->c[j],i+1});
+                }
+            }
+            else {
+                if(not node->c[ch-'a']) continue;
+                s.push({node->c[ch-'a'], i+1});
+            }
         }
 
-        return found;
+        return false;
     }
 };
 

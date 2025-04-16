@@ -4,42 +4,35 @@ using namespace std;
 class Solution {
 public:
     int leastInterval(vector<char>& tasks, int n) {
-        vector<int> task_type(26);
+        vector<int> v(26);
         for(auto c: tasks){
-            task_type[c-'A']++;
+            v[c-'A']++;
         }
 
         priority_queue<int> q;
-        queue<pair<int,int>> cool_down;
+        queue<pair<int,int>> cd;
 
-        for(auto type: task_type){
-            if (type != 0)
-                q.push(type);
-        };
-
-        int t = 0;
-        while(not q.empty() or not cool_down.empty()){
-            // cout << q.size() << endl;
-            if(not q.empty()){
-                int remaining = q.top();
-                q.pop();
-
-                remaining--;
-                if(remaining != 0){
-                    cool_down.push({t+n, remaining});
-                }
-            }
-
-            if(not cool_down.empty() and cool_down.front().first == t){
-                int remaining = cool_down.front().second;
-                cool_down.pop();
-
-                q.push(remaining);
-            }
-
-            t++;
+        for(int i=0;i<26;i++){
+            if(v[i]!=0) q.push(v[i]);
         }
 
-        return t;
+        int a = 0;
+
+        while(not q.empty() or not cd.empty()){
+            if(not q.empty()){
+                int r = q.top(); q.pop();
+                r--;
+                if(r!=0) cd.push({a+n,r});
+            }
+
+            while(not cd.empty() and cd.front().first == a){
+                auto [_,r] = cd.front(); cd.pop();
+                q.push(r);
+            }
+
+            a++;
+        }
+
+        return a;
     }
 };

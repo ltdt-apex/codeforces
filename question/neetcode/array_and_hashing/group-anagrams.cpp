@@ -4,20 +4,21 @@ using namespace std;
 class Solution {
 public:
     vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        int n = strs.size();
         unordered_map<string, vector<string>> m;
 
-        for(auto s: strs){
-            string ori = s;
-            sort(s.begin(), s.end());
-            m[s].push_back(ori);
+        for(string& s: strs){
+            string k = s;
+            sort(k.begin(), k.end());
+            m[k].push_back(s);
         }
 
-        vector<vector<string>> ans;
+        vector<vector<string>> a;
 
         for(auto [k,v]: m){
-            ans.push_back(v);
+            a.push_back(v);
         }
 
-        return ans;
+        return a;
     }
 };

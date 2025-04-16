@@ -15,17 +15,20 @@ class Solution {
 public:
     bool isValid(string s) {
         unordered_map<char, char> m = {
-            {')', '('}, 
-            {']', '['}, 
-            {'}', '{'},     
+            {')', '('},
+            {']', '['},
+            {'}', '{'},
         };
+
         stack<char> st;
 
         for(auto c: s){
-            if(not m.count(c)) st.push(c);
-            else{
-                if(st.size()==0 or m[c] != st.top()) return false;
+            if(m.count(c)){
+                if(st.empty() or st.top()!=m[c]) return false;
                 st.pop();
+            }
+            else{
+                st.push(c);
             }
         }
 

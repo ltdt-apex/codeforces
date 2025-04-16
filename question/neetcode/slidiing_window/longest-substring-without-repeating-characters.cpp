@@ -20,16 +20,18 @@ public:
     int lengthOfLongestSubstring(string s) {
         int ans = 0;
         int left = 0;
-        unordered_map<char, int> count;
+        int n = s.size();
 
-        for(int right=0; right<s.size(); right++){
-            count[s[right]]++;
-            while(count[s[right]] > 1){
-                count[s[left]]--;
+        unordered_map<char,int> m;
+
+        for(int r=0;r<n;r++){
+            m[s[r]]++;
+            while(m[s[r]]>1){
+                m[s[left]]--;
                 left++;
             }
 
-            ans = max(ans, right-left+1);
+            ans = max(ans, r-left+1);
         }
 
         return ans;

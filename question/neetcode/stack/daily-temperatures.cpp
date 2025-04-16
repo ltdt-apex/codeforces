@@ -18,19 +18,19 @@ public:
         */
 
         int n = temperatures.size();
+        vector<int> ans(n,0);
 
-        stack<pair<int, int>> s;
-        vector<int> ans(n, 0);
+        stack<pair<int,int>> s;
 
         for(int i=0;i<n;i++){
-            int cur = temperatures[i];
+            int t = temperatures[i];
 
-            while(not s.empty() and cur > s.top().first){
-                int d = i - s.top().second;
-                ans[s.top().second] = d;
-                s.pop();
+            while(not s.empty() and s.top().second < t){
+                auto [pi, pt] = s.top(); s.pop();
+                ans[pi] = i-pi;
             }
-            s.push({cur,i});
+
+            s.push({i,t});
         }
 
         return ans;

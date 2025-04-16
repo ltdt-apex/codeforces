@@ -12,37 +12,32 @@ dsu
 1234
 
 */
-
 struct DSU {
     int n;
     vector<int> parent;
-    vector<int> size;
-    int groups;
+    vector<int> s;
+    int group;
 
-    DSU(int n): parent(n), size(n,1), groups(n){
-        for(int i=0; i<n; i++){
-            parent[i]=i;
-        }
+    DSU(int n): n(n), parent(n), s(n,1), group(n) {
+        for(int i=0;i<n;i++) parent[i] = i;
     }
 
-    int find(int i){
-        if(parent[i]==i) return i;
-        return parent[i] = find(parent[i]);
+    int find(int u){
+        if(parent[u]==u) return u;
+        return parent[u] = find(parent[u]);
     }
 
-    void join(int i, int j){
-        i = find(i);
-        j = find(j);
+    void join(int u, int v){
+        u = find(u);
+        v = find(v);
 
-        if (i==j) return;
+        if(u==v) return;
 
-        if(size[i] > size[j]){
-            swap(i,j);
-        }
+        if(s[u]>s[v]) swap(u,v);
 
-        parent[i] = j;
-        size[j] += size[i];
-        groups--;
+        parent[u] = v;
+        s[v]+=s[u];
+        group--;
     }
 };
 
@@ -55,6 +50,6 @@ public:
             dsu.join(e[0], e[1]);
         }
 
-        return dsu.groups;
+        return dsu.group;
     }
 };

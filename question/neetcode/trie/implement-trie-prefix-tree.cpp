@@ -1,60 +1,65 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-struct TrieNode {
-    TrieNode* child[26] = {nullptr};
-    bool isEnd;
-
-    TrieNode(){
-        isEnd = false;
-    }
+struct TrieNode{
+    TrieNode* c[26] = {nullptr};
+    bool isEnd = false;
 };
 
-class Trie {
-public:
-    TrieNode* root;
-    Trie() {
-        root = new TrieNode();
-    }
-    
-    void insert(string word) {
-        TrieNode* cur = root;
 
-        for(auto c: word){
-            if (not cur->child[c-'a']) cur->child[c-'a'] = new TrieNode();
-            cur = cur->child[c-'a'];
+class WordDictionary {
+    private:
+        TrieNode* root;
+    public:
+        WordDictionary() {
+            root = new TrieNode();
         }
+        
+        void addWord(string word) {
+            TrieNode* node = root;
 
-        cur->isEnd = true;
-    }
-    
-    bool search(string word) {
-        TrieNode* cur = root;
+            for(auto ch: word){
+                if(not node->c[ch-'a']) node->c[ch-'a'] = new TrieNode();
+                node = node->c[ch-'a'];
+            }
 
-        for(auto c: word){
-            if (not cur->child[c-'a']) return false;
-            cur = cur->child[c-'a'];
+            node->isEnd = true;
         }
+        
+        bool search(string word) {
+            TrieNode* node = root;
+            int n = word.size();
 
-        return cur->isEnd;
-    }
-    
-    bool startsWith(string prefix) {
-        TrieNode* cur = root;
+            queue<pair<TrieNode*, int>> q;
+            q.push({node, 0});
 
-        for(auto c: prefix){
-            if (not cur->child[c-'a']) return false;
-            cur = cur->child[c-'a'];
+            while(not q.empty()){
+                auto [node, i] = q.front(); q.pop();
+                if(i==n) 
+                    if(node->isEnd) return true;
+                else
+                    continue;
+
+                char ch = word[i];
+                if(ch=='.'){
+                    for(int j=0;j<26;j++){
+                        if(not node->c[j]) continue;
+                        q.push({node->c[j], i+1});
+                    }
+                }
+                else{
+                    if(not node->c[ch-'a']) continue;
+                    q.push({node->c[ch-'a'], i+1});
+                }
+            }
+
+            return false;
         }
-
-        return true;
-    }
-};
-
-/**
- * Your Trie object will be instantiated and called as such:
- * Trie* obj = new Trie();
- * obj->insert(word);
- * bool param_2 = obj->search(word);
- * bool param_3 = obj->startsWith(prefix);
- */
+    };
+    
+    /**
+     * Your WordDictionary object will be instantiated and called as such:
+     * WordDictionary* obj = new WordDictionary();
+     * obj->addWord(word);
+     * bool param_2 = obj->search(word);
+     */

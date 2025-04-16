@@ -6,11 +6,11 @@ public:
     bool containsDuplicate(vector<int>& nums) {
         unordered_set<int> s;
 
-        for(auto x: nums){
-            if(s.count(x))return true;
+        for(auto x:nums){
+            if(s.count(x)) return 1;
             s.insert(x);
         }
 
-        return false;
+        return 0;
     }
 };

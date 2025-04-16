@@ -4,30 +4,34 @@ using namespace std;
 
 class Solution {
 public:
-    bool dfs(int u, vector<vector<int>>& adj, unordered_set<int>& seen, int p){
-        seen.insert(u);
+    bool dfs(int u, int p, vector<vector<int>>& adj, vector<int>& seen){
+        seen[u] = 1;
 
-        bool istree = true;
+        bool ok = true;
 
         for(auto v: adj[u]){
-            if(v==p) continue;
-            if(seen.count(v)) return false;
-            istree &= dfs(v,adj,seen,u);
+            if(p==v) continue;
+            if(seen[v]) return false;
+            ok &= dfs(v,u,adj,seen);
         }
 
-        return istree;
+        return ok;
     }
+
 
     bool validTree(int n, vector<vector<int>>& edges) {
         vector<vector<int>> adj(n);
 
         for(auto e: edges){
-            adj[e[0]].push_back(e[1]);
-            adj[e[1]].push_back(e[0]);
+            int u = e[0];
+            int v = e[1];
+
+            adj[u].push_back(v);
+            adj[v].push_back(u);
         }
 
-        unordered_set<int> seen;
+        vector<int> seen(n);
 
-        return dfs(0,adj,seen,-1) and seen.size()==n;
+        return dfs(0,-1,adj,seen) and accumulate(seen.begin(), seen.end(), 0) == n;
     }
 };

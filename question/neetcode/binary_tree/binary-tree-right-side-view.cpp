@@ -14,31 +14,21 @@ using namespace std;
  */
 class Solution {
 public:
+    void dfs(TreeNode* node, int d, vector<int>& a){
+        if(not node) return;
+        
+        if(a.size()==d) a.push_back(node->val);
+        else a[d] = node->val;
 
-    void dfs(TreeNode* node, int cur, vector<vector<int>>& level){
-        if(cur==level.size()){
-            level.push_back({node->val});
-        }else{
-            level[cur].push_back(node->val);
-        }
-
-        if(node->left) dfs(node->left,cur+1,level);
-        if(node->right) dfs(node->right,cur+1,level);
-
-
+        dfs(node->left,d+1,a);
+        dfs(node->right,d+1,a);
     }
 
     vector<int> rightSideView(TreeNode* root) {
-        vector<vector<int>> level;
+        vector<int> a;
 
-        if(root) dfs(root,0,level);
+        dfs(root,0,a);
 
-        vector<int> ans;
-
-        for(auto l: level){
-            ans.push_back(l.back());
-        }
-
-        return ans;
+        return a;
     }
 };

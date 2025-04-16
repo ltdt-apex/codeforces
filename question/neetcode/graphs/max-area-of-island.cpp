@@ -2,63 +2,42 @@
 using namespace std;
 
 class Solution {
+private:
+    int n,m;
+    vector<pair<int,int>> dirs = {{0,-1}, {0,1}, {-1,0}, {1,0}};
 public:
 
-    vector<pair<int, int>> dirs = {{-1,0}, {1,0}, {0,-1}, {0,1}};
-
-
-    int dfs(vector<vector<int>>& grid, int i, int j, unordered_map<int, unordered_set<int>>& seen, int n, int m){
-        seen[i].insert(j);
-
-        int area = 1;
-
-        for (auto [di, dj]: dirs){
-            int new_i = i+di;
-            int new_j = j+dj;
-
-            if(new_i<0 or new_i>=n or new_j<0 or new_j>=m or grid[new_i][new_j] == 0 or seen[new_i].count(new_j)) 
-                continue;
-            area += dfs(grid, new_i, new_j, seen, n, m);
+    void dfs(int i, int j, vector<vector<int>>& seen, vector<vector<int>>& grid, int& s){
+        seen[i][j] = 1;
+        s++;
+        
+        for(auto [di,dj]: dirs){
+            int ni=i+di;
+            int nj=j+dj;
+            
+            if(ni<0 or nj<0 or ni>=n or nj>=m or grid[ni][nj]==0 or seen[ni][nj]) continue;
+            dfs(ni,nj,seen,grid,s);
         }
-
-        return area;
     }
 
     int maxAreaOfIsland(vector<vector<int>>& grid) {
-        /*
-        def dfs():
-            area = 1
+        int a = 0;
 
-            for each cell next to it:
-                if out of bound or the cell is not equal to 1 or the cell discover:
-                    continue
-                else:
-                    area += dfs(cell)
+        n = grid.size();
+        m = grid[0].size();
 
-            return area
-
-        if cell = 1:
-            dfs()
-        
-        */
-
-        int n = grid.size();
-        int m = grid[0].size();
-        unordered_map<int, unordered_set<int>> seen;
-
-        int maxArea = 0;
+        vector<vector<int>> seen(n, vector<int>(m));
 
         for(int i=0;i<n;i++){
             for(int j=0;j<m;j++){
-                if(grid[i][j] == 1 and not seen[i].count(j)){
-                    int area = dfs(grid,i,j,seen,n,m);
-                    // cout << area << " " << endl;
-                    maxArea = max(maxArea, area);
+                if(grid[i][j]==1 and not seen[i][j]){
+                    int s = 0;
+                    dfs(i,j,seen,grid,s);
+                    a = max(a,s);
                 }
             }
         }
 
-        return maxArea;
-
+        return a;
     }
 };

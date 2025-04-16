@@ -4,22 +4,24 @@ using namespace std;
 class Solution {
 public:
     vector<int> topKFrequent(vector<int>& nums, int k) {
-        unordered_map<int,int> count;
+        unordered_map<int, int> m;
 
-        for (auto x: nums){
-            count[x]++;
+        for(auto x: nums){
+            m[x]++;
         }
 
-        set<pair<int,int>> heap;
+        vector<pair<int,int>> c;
 
-        for(auto [k,v]: count){
-            heap.insert({-v,k});
+        for(auto [k,v]: m){
+            c.push_back({v,k});
         }
+
+        sort(c.rbegin(), c.rend());
 
         vector<int> ans;
+
         for(int i=0;i<k;i++){
-            ans.push_back((*heap.begin()).second);
-            heap.erase(heap.begin());
+            ans.push_back(c[i].second);
         }
 
         return ans;

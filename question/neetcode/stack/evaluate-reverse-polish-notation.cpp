@@ -13,12 +13,10 @@ public:
         stack<int> stack;
         set<string> opers = {"+","-","*","/"};
 
-        for(auto s: tokens){
-            if(opers.count(s)){
-                int b = stack.top();
-                stack.pop();
-                int a = stack.top();
-                stack.pop();
+        for (auto s: tokens){
+            if (opers.count(s)){
+                int b = stack.top(); stack.pop();
+                int a = stack.top(); stack.pop();
 
                 if(s=="+") a+=b;
                 if(s=="-") a-=b;
@@ -31,7 +29,6 @@ public:
                 stack.push(stoi(s));
             }
         }
-
         return stack.top();
     }
 };

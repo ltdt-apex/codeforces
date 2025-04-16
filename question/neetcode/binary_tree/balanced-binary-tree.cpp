@@ -14,23 +14,19 @@ using namespace std;
  */
 class Solution {
 public:
-
     int dfs(TreeNode* node, bool& valid){
-        int left = 0;
-        int right = 0;
+        if(not node) return 0;
 
-        if(node->left) left = dfs(node->left, valid);
-        if(node->right) right = dfs(node->right, valid);
-        
+        int left = dfs(node->left, valid);
+        int right = dfs(node->right, valid);
+
         if(abs(left-right)>1) valid = false;
 
-        return max(left,right)+1;
+        return 1+max(left,right);
     }
-
     bool isBalanced(TreeNode* root) {
         bool valid = true;
-
-        if(root) dfs(root,valid);
+        dfs(root, valid);
 
         return valid;
     }

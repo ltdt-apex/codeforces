@@ -23,40 +23,35 @@ public:
 
         return ans
         */
+       int n=grid.size();
+       int m = grid[0].size();
+       vector<vector<int>> seen(n, vector<int>(m));
+       queue<tuple<int,int,int>> q;
 
-        queue<tuple<int,int,int>> q; // (row no., column no., distance to the closest treasure)
-        int n = grid.size();
-        int m = grid[0].size();
-
-        unordered_map<int, unordered_set<int>> seen;
-
-        for(int i=0;i<n;i++){
-            for(int j=0; j<m; j++){
-                if(grid[i][j] == 0) {
-                    q.push({i,j,0});
-                    seen[i].insert(j);
+       for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(grid[i][j] == 0){
+                    q.push({0,i,j});
+                    seen[i][j] = 1;
                 }
             }
-        }
+       }
 
-        while(not q.empty()){
-            int i,j,d;
-            tie(i,j,d) = q.front();
-            q.pop();
+
+       while(not q.empty()){
+            int d,i,j;
+            tie(d,i,j) = q.front(); q.pop();
 
             grid[i][j] = d;
 
-            for (auto [di, dj]: dirs){
-                int new_i = i+di;
-                int new_j = j+dj;
+            for(auto [di,dj]: dirs){
+                int ni = i+di;
+                int nj = j+dj;
 
-                // cout << new_i << " " << new_j << " " << seen[new_i].count(new_j) << endl;
-                if(new_i<0 or new_i>=n or new_j<0 or new_j>=m or grid[new_i][new_j]==-1 or seen[new_i].count(new_j)) continue;
-
-                // cout << new_i << " " << new_j << endl;
-                q.push({new_i, new_j, 1+d});
-                seen[new_i].insert(new_j);
+                if(ni<0 or nj<0 or ni>=n or nj>=m or grid[ni][nj]==-1 or seen[ni][nj]) continue;
+                seen[ni][nj] = 1;
+                q.push({d+1,ni,nj});
             }
-        }
+       }
     }
 };

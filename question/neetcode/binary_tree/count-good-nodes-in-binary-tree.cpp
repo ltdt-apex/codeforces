@@ -14,20 +14,19 @@ using namespace std;
  */
 class Solution {
 public:
-    void dfs(TreeNode* node, int max_, int& count){
-        if(node->val >= max_) count++;
+    void dfs(TreeNode* node, int& a, int m){
+        if(not node) return;
 
-        max_ = max(max_, node->val);
-
-        if(node->left) dfs(node->left, max_, count);
-        if(node->right) dfs(node->right, max_, count);
+        if(node->val>=m)a++;
+        dfs(node->left,a,max(m,node->val));
+        dfs(node->right,a,max(m,node->val));
     }
 
     int goodNodes(TreeNode* root) {
-        int count = 0;
+        int a = 0;
+        
+        dfs(root, a, -INT_MAX);
 
-        if(root) dfs(root, -INT_MAX, count);
-
-        return count;
+        return a;
     }
 };
