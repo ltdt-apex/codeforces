@@ -47,6 +47,10 @@ vii dirs8 = {{-1,-1},{-1,0},{-1,1},{0,-1},{0,1},{1,-1},{1,0},{1,1}};
 class Solution {
 public:
     int numTilings(int n) {
+        /*
+        derive the recursive equation.
+        https://leetcode.com/problems/domino-and-tromino-tiling/solutions/6715384/easy-dp-with-math-manuscript-vs-matrix-power-beats-100/
+        */
         vl dp(max(4,n+1));
 
         dp[0] = 1;
