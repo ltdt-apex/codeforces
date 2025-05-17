@@ -30,9 +30,9 @@ typedef tuple<ll, ll, ll> tlll;
 #define s second
 #define pb push_back
 #define mp make_pair
-#define range(i,b) for (ll i = 0; i < b; i++)
-#define rep(i,a,b) for (ll i = a; i < b; i++)
-#define repr(i,a,b) for (ll i = a; i > b; i--)
+#define range(i,b) for (int i = 0; i < b; i++)
+#define rep(i,a,b) for (int i = a; i < b; i++)
+#define repr(i,a,b) for (int i = a; i > b; i--)
 #define sq(a) (a)*(a)
 #define all(a) a.begin(), a.end()
 #define rall(a) a.rbegin(), a.rend()
